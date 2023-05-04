@@ -1,18 +1,18 @@
 import "../../styles/globals.css";
 import { Meta, StoryObj } from "@storybook/react";
-import { RadioGroup } from "./radioGroup";
+import { TableRow } from "./tableRow";
 
-const meta: Meta<typeof RadioGroup> = {
+const meta: Meta<typeof TableRow> = {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: "Components/radioGroup",
-  component: RadioGroup,
+  title: "Components/tableRow",
+  component: TableRow,
 };
 
 export default meta;
-type Story = StoryObj<typeof RadioGroup>;
+type Story = StoryObj<typeof TableRow>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -21,23 +21,17 @@ type Story = StoryObj<typeof RadioGroup>;
  */
 export const Primary: Story = {
   args: {
-    defaultValue: "value1",
-    groupName: "test",
-    options: [
-      {
-        value: "value1",
-        label: "Value 1",
-      },
-      {
-        value: "value2",
-        label: "Value 2",
-      },
-      {
-        value: "value3",
-        label: "Value 3",
-      },
-    ],
+    imageSrc:
+      "https://yt3.googleusercontent.com/P6JCQgheTBEM71NFm8v1TdVlxWFr5C8LS6nXdZbmDGptxdTbocpDyzUPL-X5Ix-c4IjqJ5l74w=s176-c-k-c0x00ffffff-no-rj",
+    altText: "image alt",
+    title: "Title",
+    subTitle: "Subtitle text",
   },
   argTypes: {},
-  render: (props) => <RadioGroup {...props} />,
+  render: (props) => (
+    <table className="w-80 space-y-2">
+      <TableRow {...props} />
+      <TableRow {...props} />
+    </table>
+  ),
 };
