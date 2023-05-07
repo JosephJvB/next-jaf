@@ -21,12 +21,21 @@ type Story = StoryObj<typeof PlantCard>;
  */
 const imageSrc =
   "https://inbloomflorist.flowermanager.net/wp-content/uploads/sites/23/2020/10/ZZ-Plant-50-of-6-1-960x1200.jpg";
+const now = new Date();
+const pastDate = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate() - 3,
+  now.getHours(),
+  now.getMinutes(),
+  now.getSeconds()
+);
 export const Primary: Story = {
   args: {
     imageSrc,
     plantName: "zz plant",
-    hydrationCycle: 200,
-    lastHydrated: new Date(),
+    hydrationInterval: 1000 * 60 * 60 * 24 * 7,
+    lastHydrated: pastDate.getTime(),
   },
   render: (props) => <PlantCard {...props} />,
 };
