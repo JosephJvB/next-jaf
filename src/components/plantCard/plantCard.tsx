@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
+import Link from "next/link";
+import { toDateStr } from "../../util";
 import { WaterDropSVG } from "../svgs/waterDropSVG";
 
 const sec = 1000;
@@ -8,17 +10,12 @@ const hour = min * 60;
 const day = hour * 24;
 
 export interface PlantCardProps {
+  slug: string;
   imageSrc: string;
   plantName: string;
   hydrationInterval: number;
   lastHydrated: number;
 }
-const toDateStr = (d: Date) => {
-  return [
-    d.toDateString().split(" ").slice(0, 3).join(" "),
-    d.toTimeString().split(" ")[0],
-  ].join(", ");
-};
 export const PlantCard: FC<PlantCardProps> = (props) => {
   const getHydrationPercent = () =>
     100 -
@@ -62,8 +59,8 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
     <div className="border-grey-200 flex h-[80vh] max-h-[600px] w-[300px] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid px-2 py-8">
       <div className="flex flex-col items-center justify-center">
         <Image
-          width="50"
-          height="50"
+          width="100"
+          height="150"
           className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"
           src={props.imageSrc}
           alt={`thumbnail of plant named ${props.plantName}`}
@@ -72,7 +69,8 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
       </div>
       <h3 className="text-xl text-blue-400">{props.plantName}</h3>
       <p>{countdown}</p>
-      <button
+      <Link
+        href={`/upload?slug=${props.slug}`}
         className="hover h-[60px] w-[60px] rounded-full border-2 border-solid border-gray-200 p-2"
         onClick={() => null}
         style={{
@@ -80,7 +78,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
         }}
       >
         <WaterDropSVG />
-      </button>
+      </Link>
     </div>
   );
 };

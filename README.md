@@ -5,6 +5,7 @@ Vegetation Hydration Station : VHS
 - Loading state
 - Handle no plants
 - Swipe between plants
+  - https://www.youtube.com/watch?v=V0dfhBc2lj8
 
 2. Plant Card
 
