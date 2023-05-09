@@ -2,7 +2,9 @@ import { FC, useState } from "react";
 import Image from "next/image";
 import { CameraSVG } from "../svgs/cameraSVG";
 import { toDateStr } from "../../util";
-import s3 from "@/services/s3";
+import http from "@/services/httpService";
+import { useRouter } from "next/router";
+import { Plant } from "@/types/plant";
 
 interface ImageProps {
   src: string;
@@ -11,13 +13,15 @@ interface ImageProps {
   ts: Date;
 }
 export interface UploadModalProps {
-  plantName: string;
+  plant: Plant;
   uploadUrl: string;
   s3Key: string;
 }
 export const UploadModal: FC<UploadModalProps> = (props) => {
   const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<ImageProps | null>();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = async (files: FileList | null) => {
     if (typeof window === "undefined") {
@@ -44,9 +48,19 @@ export const UploadModal: FC<UploadModalProps> = (props) => {
     if (!file) {
       return;
     }
-    // todo upload progress
-    const buffer = await file.arrayBuffer();
-    await s3.uploadObject(props.s3Key, Buffer.from(buffer));
+    setLoading(true);
+    try {
+      // todo upload progress
+      await http.uploadImage(props.uploadUrl, file);
+      // then update dynamodb
+      // then update shared plant props
+      // props.plant.lastHydrated = Date.now();
+      router.push("/");
+    } catch (e) {
+      console.error("http.uploadImage failed");
+      console.error(e);
+    }
+    setLoading(false);
   };
 
   const dateStr = image && toDateStr(image.ts);
@@ -60,7 +74,7 @@ export const UploadModal: FC<UploadModalProps> = (props) => {
     >
       <label className="h-[350px] w-[200px] text-center" htmlFor="plant-image">
         <p>Take/select photo of</p>
-        <p>{props.plantName}</p>
+        <p>{props.plant.plantName}</p>
         <input
           className="absolute hidden h-[100%] w-[100%]"
           type="file"
@@ -82,7 +96,9 @@ export const UploadModal: FC<UploadModalProps> = (props) => {
           </>
         )}
       </label>
-      <button type="submit">Save</button>
+      <button disabled={!file} type="submit">
+        {loading ? "Saving" : "Save"}
+      </button>
     </form>
   );
 };

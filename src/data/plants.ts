@@ -1,7 +1,7 @@
-import { PlantCardProps } from "@/components/plantCard/plantCard";
+import { Plant } from "@/types/plant";
 
 const now = new Date();
-export const plants: PlantCardProps[] = [
+export const plants: Plant[] = [
   {
     slug: "zzplant",
     imageSrc:

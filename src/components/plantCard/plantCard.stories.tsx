@@ -32,11 +32,13 @@ const pastDate = new Date(
 );
 export const Primary: Story = {
   args: {
-    slug: "zzplant",
-    imageSrc,
-    plantName: "zz plant",
-    hydrationInterval: 1000 * 60 * 60 * 24 * 7,
-    lastHydrated: pastDate.getTime(),
+    plant: {
+      slug: "zzplant",
+      imageSrc,
+      plantName: "zz plant",
+      hydrationInterval: 1000 * 60 * 60 * 24 * 7,
+      lastHydrated: pastDate.getTime(),
+    },
   },
   render: (props) => <PlantCard {...props} />,
 };
