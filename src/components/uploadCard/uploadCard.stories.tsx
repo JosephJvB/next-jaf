@@ -1,18 +1,18 @@
 import "../../styles/globals.css";
 import { Meta, StoryObj } from "@storybook/react";
-import { PlantCard } from "./plantCard";
+import { UploadCard } from "./uploadCard";
 
-const meta: Meta<typeof PlantCard> = {
+const meta: Meta<typeof UploadCard> = {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: "Components/plantCard",
-  component: PlantCard,
+  title: "Components/uploadCard",
+  component: UploadCard,
 };
 
 export default meta;
-type Story = StoryObj<typeof PlantCard>;
+type Story = StoryObj<typeof UploadCard>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -39,8 +39,10 @@ export const Primary: Story = {
       hydrationInterval: 1000 * 60 * 60 * 24 * 7,
       lastHydrated: pastDate.getTime(),
       foodInterval: 1000 * 60 * 60 * 24 * 7 * 4,
-      lastFed: pastDate.getTime(),
+      lastFed: pastDate.getTime() - 1000 * 60 * 60 * 24 * 7,
     },
+    uploadUrl: "123",
+    s3Key: "s3 key",
   },
-  render: (props) => <PlantCard {...props} />,
+  render: (props) => <UploadCard {...props} />,
 };

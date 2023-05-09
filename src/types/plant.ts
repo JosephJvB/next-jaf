@@ -4,4 +4,6 @@ export interface Plant {
   plantName: string;
   hydrationInterval: number;
   lastHydrated: number;
+  foodInterval: number;
+  lastFed: number;
 }

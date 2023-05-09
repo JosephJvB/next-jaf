@@ -1,6 +1,6 @@
-import { PlantCardProps } from "@/components/plantCard/plantCard";
+import { Plant } from "@/types/plant";
 
-async function getPlants(): Promise<PlantCardProps[]> {
+async function getPlants(): Promise<Plant[]> {
   const response = await fetch(`/api/v1/plants`);
   if (!response.ok) {
     throw response;

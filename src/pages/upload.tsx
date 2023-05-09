@@ -1,9 +1,8 @@
-import { PlantCardProps } from "@/components/plantCard/plantCard";
-import { UploadModal } from "@/components/uploadModal/uploadModal";
-import { plants } from "@/data/plants";
-import s3 from "@/services/s3Service";
-import { Plant } from "@/types/plant";
 import { GetServerSideProps } from "next";
+import { Plant } from "../types/plant";
+import { plants } from "../data/plants";
+import s3 from "../services/s3Service";
+import { UploadCard } from "../components/uploadCard/uploadCard";
 
 export interface UploadProps {
   plant?: Plant;
@@ -37,9 +36,9 @@ export const getServerSideProps: GetServerSideProps<UploadProps> = async (
 
 export default function Home(props: UploadProps) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between py-24">
       {props.plant && (
-        <UploadModal
+        <UploadCard
           plant={props.plant}
           uploadUrl={props.uploadUrl}
           s3Key={props.s3Key}

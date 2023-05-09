@@ -11,6 +11,7 @@ Vegetation Hydration Station : VHS
 
 - Image
 - BackgroundColour based off plant image colour composition, find an API to do that
+  - https://cloud.google.com/vision/docs/detecting-properties#vision_image_property_detection-nodejs
 - Name
 - Hydration state & date
 - Button to mark plant as watered
