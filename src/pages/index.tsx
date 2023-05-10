@@ -29,7 +29,9 @@ export async function getServerSideProps(context: AppContext) {
 export interface HomeProps {
   plants: Plant[];
 }
+// https://github.com/dominicarrojado/react-typescript-swiper/blob/main/src/components/Swiper.tsx
 export default function Home(props: HomeProps) {
+  const [currentIdx, setCurrentIdx] = useState(0);
   const [swiping, setSwiping] = useState(false);
   const [startX, setStartX] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
@@ -56,17 +58,28 @@ export default function Home(props: HomeProps) {
     if (nextOffset < rightLimit) {
       nextOffset = rightLimit;
     }
+    console.log("setMove");
     setOffsetX(nextOffset);
   };
   const swipeEnd = (e: Event) => {
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
-    const diff = Math.abs(event.clientX - startX);
-    if (diff < 50) {
-      return;
-    }
-    if (event.clientX > startX) {
+    const diff = event.clientX - startX;
+    const w = containerRef.current?.clientWidth ?? 0;
+    if (Math.abs(diff) > 40) {
+      console.log("setEnd");
+      if (event.clientX > startX) {
+        // right
+        console.log("right");
+        setOffsetX(Math.floor(diff / w) * w);
+      } else {
+        // left
+        console.log("left");
+        setOffsetX(Math.ceil(diff / w) * w);
+      }
     } else {
+      setOffsetX(Math.round(diff / w) * w);
     }
+
     setSwiping(false);
   };
   return (
