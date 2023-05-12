@@ -6,6 +6,7 @@ Vegetation Hydration Station : VHS
 - Handle no plants
 - Swipe between plants
   - https://www.youtube.com/watch?v=V0dfhBc2lj8
+  - https://github.com/dominicarrojado/react-typescript-swiper
 
 2. Plant Card
 
@@ -23,5 +24,7 @@ Vegetation Hydration Station : VHS
 - Image Upload
 - Set Name
 - Set Hydration cycle
+- Plant details from GoogleSheets so gerry can update it easily too
+  - Could look at doing photos -> Google Photos too
 
 5. Auth, login page, something

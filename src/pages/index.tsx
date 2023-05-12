@@ -41,6 +41,16 @@ export default function Home(props: HomeProps) {
     (containerRef.current?.clientWidth ?? 0) -
     (containerRef.current?.scrollWidth ?? 0);
 
+  const applyLimits = (n: number) => {
+    if (n > 0) {
+      return 0;
+    }
+    if (n < rightLimit) {
+      return rightLimit;
+    }
+    return n;
+  };
+
   const swipeStart = (e: Event) => {
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
     setStartX(event.clientX - offsetX);
@@ -51,35 +61,29 @@ export default function Home(props: HomeProps) {
       return;
     }
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
-    let nextOffset = event.clientX - startX;
-    if (nextOffset > 0) {
-      nextOffset = 0;
-    }
-    if (nextOffset < rightLimit) {
-      nextOffset = rightLimit;
-    }
-    console.log("setMove");
+    const nextOffset = applyLimits(event.clientX - startX);
+    console.log("onMove", nextOffset);
     setOffsetX(nextOffset);
   };
   const swipeEnd = (e: Event) => {
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
     const diff = event.clientX - startX;
     const w = containerRef.current?.clientWidth ?? 0;
+    let nextOffset = offsetX;
     if (Math.abs(diff) > 40) {
-      console.log("setEnd");
       if (event.clientX > startX) {
         // right
-        console.log("right");
-        setOffsetX(Math.floor(diff / w) * w);
+        nextOffset = Math.floor(diff / w) * w;
       } else {
         // left
-        console.log("left");
-        setOffsetX(Math.ceil(diff / w) * w);
+        nextOffset = Math.ceil(diff / w) * w;
       }
     } else {
-      setOffsetX(Math.round(diff / w) * w);
+      nextOffset = Math.round(diff / w) * w;
     }
-
+    nextOffset = applyLimits(nextOffset);
+    console.log("onEnd", nextOffset);
+    setOffsetX(nextOffset);
     setSwiping(false);
   };
   return (
