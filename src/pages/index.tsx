@@ -4,7 +4,7 @@ import { Plant } from "../types/plant";
 import { plants } from "../data/plants";
 import { useRef, useState } from "react";
 
-type Event =
+type SwipeEvent =
   | MouseEvent
   | TouchEvent
   | React.TouchEvent<HTMLElement>
@@ -31,77 +31,60 @@ export interface HomeProps {
 }
 // https://github.com/dominicarrojado/react-typescript-swiper/blob/main/src/components/Swiper.tsx
 export default function Home(props: HomeProps) {
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [swiping, setSwiping] = useState(false);
-  const [startX, setStartX] = useState(0);
+  const containerOffsetXRef = useRef(0); // can I use containerRef.current.scrollLeft instead?
+  const startXRef = useRef(0);
+
+  // useStateRef
+  const offsetXRef = useRef(0);
   const [offsetX, setOffsetX] = useState(0);
-  const containerRef = useRef<HTMLUListElement>(null);
-
-  const rightLimit =
-    (containerRef.current?.clientWidth ?? 0) -
-    (containerRef.current?.scrollWidth ?? 0);
-
-  const applyLimits = (n: number) => {
-    if (n > 0) {
-      return 0;
-    }
-    if (n < rightLimit) {
-      return rightLimit;
-    }
-    return n;
+  const updateOffsetX = (n: number) => {
+    offsetXRef.current = n;
+    setOffsetX(n);
   };
 
-  const swipeStart = (e: Event) => {
+  const swipeStart = (e: SwipeEvent) => {
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
-    setStartX(event.clientX - offsetX);
-    setSwiping(true);
+
+    containerOffsetXRef.current = offsetXRef.current;
+    startXRef.current = event.clientX;
+    // add the listener to the window, not the swipable div
+    // mousemove should listen even if mouse leaves the swipable div while mouse is down
+    window.addEventListener("mousemove", swipeMove);
+    window.addEventListener("touchmove", swipeMove);
+    window.addEventListener("mouseup", swipeEnd);
+    window.addEventListener("touchend", swipeEnd);
+    // setSwiping(true);
   };
-  const swipeMove = (e: Event) => {
-    if (!swiping) {
-      return;
+  const swipeMove = (e: SwipeEvent) => {
+    const event = "changedTouches" in e ? e.changedTouches[0] : e;
+    const swipeDiff = startXRef.current - event.clientX;
+    let nextOffsetX = containerOffsetXRef.current - swipeDiff;
+    if (nextOffsetX > 0) {
+      nextOffsetX = 0;
     }
-    const event = "changedTouches" in e ? e.changedTouches[0] : e;
-    const nextOffset = applyLimits(event.clientX - startX);
-    console.log("onMove", nextOffset);
-    setOffsetX(nextOffset);
+    updateOffsetX(nextOffsetX);
   };
-  const swipeEnd = (e: Event) => {
+  const swipeEnd = (e: SwipeEvent) => {
     const event = "changedTouches" in e ? e.changedTouches[0] : e;
-    const diff = event.clientX - startX;
-    const w = containerRef.current?.clientWidth ?? 0;
-    let nextOffset = offsetX;
-    if (Math.abs(diff) > 40) {
-      if (event.clientX > startX) {
-        // right
-        nextOffset = Math.floor(diff / w) * w;
-      } else {
-        // left
-        nextOffset = Math.ceil(diff / w) * w;
-      }
-    } else {
-      nextOffset = Math.round(diff / w) * w;
-    }
-    nextOffset = applyLimits(nextOffset);
-    console.log("onEnd", nextOffset);
-    setOffsetX(nextOffset);
-    setSwiping(false);
+    window.removeEventListener("mousemove", swipeMove);
+    window.removeEventListener("mouseup", swipeEnd);
+    window.removeEventListener("touchmove", swipeMove);
+    window.removeEventListener("touchend", swipeEnd);
   };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
       <div
         onMouseDown={swipeStart}
         onTouchStart={swipeStart}
-        onMouseMove={swipeMove}
-        onTouchMove={swipeMove}
         onMouseUp={swipeEnd}
         onTouchEnd={swipeEnd}
         className="w-[100%] max-w-[100%] touch-pan-y overflow-hidden px-4"
       >
         <ul
-          ref={containerRef}
           className="w-max-[100%] duration-0.3 relative flex w-[100%] list-none flex-row transition ease-out"
           style={{
-            transform: `translateX(${offsetX}px)`,
+            transform: `translate3d(${offsetX}px, 0, 0)`,
           }}
         >
           {props.plants.map((plant) => (

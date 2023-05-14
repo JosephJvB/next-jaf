@@ -75,6 +75,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
       >
         <div className="flex flex-col items-center justify-center">
           <Image
+            draggable={false}
             width="100"
             height="150"
             className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"

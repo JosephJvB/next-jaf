@@ -7,6 +7,7 @@ Vegetation Hydration Station : VHS
 - Swipe between plants
   - https://www.youtube.com/watch?v=V0dfhBc2lj8
   - https://github.com/dominicarrojado/react-typescript-swiper
+  - Using refs because it's more performant (i think). state is re-created on render, ref persists
 
 2. Plant Card
 
