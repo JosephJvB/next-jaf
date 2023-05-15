@@ -4,3 +4,7 @@ export const toDateStr = (d: Date) => {
     d.toTimeString().split(" ")[0],
   ].join(", ");
 };
+
+export const slugify = (s: string) => {
+  return s.replace(/ /g, "").toLowerCase();
+};

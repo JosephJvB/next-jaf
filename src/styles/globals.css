@@ -16,6 +16,6 @@
   }
 }
 body {
-  background-image: url(/monstera-bg.jpg);
+  background-image: url(../../public/monstera-bg.jpg);
   background-position: center;
 }
