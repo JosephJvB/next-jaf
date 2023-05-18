@@ -20,10 +20,11 @@ export interface SwiperProps {
 // https://github.com/dominicarrojado/react-typescript-swiper/blob/main/src/components/Swiper.tsx
 export const Swiper: FC<SwiperProps> = (props) => {
   const containerRef = useRef<HTMLUListElement>(null);
-  const containerWidthRef = useRef(0); // can I use containerRef.current.scrollLeft instead?
-  const containerOffsetXRef = useRef(0); // can I use containerRef.current.scrollLeft instead?
   const minXRef = useRef(0);
   const startXRef = useRef(0);
+  // can I use containerRef.current element properties instead?
+  const containerWidthRef = useRef(0);
+  const containerOffsetXRef = useRef(0);
 
   // useStateRef
   const offsetXRef = useRef(0);

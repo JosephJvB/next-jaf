@@ -6,6 +6,8 @@ declare global {
       NEXT_PUBLIC_S3_REGION: string;
       NEXT_PUBLIC_S3_BUCKET: string;
       DYNAMODB_REGION: string;
+      GOOGLE_ACCOUNT_private_key: string;
+      GOOGLE_ACCOUNT_client_email: string;
     }
   }
 }

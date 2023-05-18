@@ -1,15 +1,15 @@
-import { AppContext } from "next/app";
 import { Plant } from "../types/plant";
-import { plants } from "../data/plants";
 import { Swiper } from "../components/swiper/swiper";
 import { GetServerSideProps } from "next";
+import * as sheetService from "../services/sheetService";
 
 export interface HomeProps {
   plants: Plant[];
 }
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-  // actually should load from db
-  await new Promise((r) => setTimeout(r, 150));
+  const rows = await sheetService.getRows("A:H");
+  console.log(rows);
+  const plants = rows.slice(1).map((r) => sheetService.rowToPlant(r));
   return {
     props: {
       plants,

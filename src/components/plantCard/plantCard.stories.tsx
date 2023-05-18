@@ -1,5 +1,4 @@
 import "../../styles/globals.css";
-import { faker } from "@faker-js/faker";
 import { Meta, StoryObj } from "@storybook/react";
 import { PlantCard } from "./plantCard";
 import { getRandomPlant } from "../../test/testUtil";
