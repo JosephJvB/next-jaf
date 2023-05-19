@@ -53,7 +53,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     setLoading(true);
     try {
       // todo upload progress
-      await http.uploadImage(props.uploadUrl, file);
+      // await http.uploadImage_S3(props.uploadUrl, file);
       // then update dynamodb
       router.push("/");
     } catch (e) {

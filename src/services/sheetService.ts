@@ -1,9 +1,9 @@
+import fs from "fs";
 import { google, sheets_v4 } from "googleapis";
 import { Plant } from "../types/plant";
+import { getGoogleAuthClient } from "./googleAuth";
 
 // https://raw.githubusercontent.com/JosephJvB/gsheets-api/main/src/database/sheetClient.ts
-
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 let spreadsheetId = "156cZe81ntgR_2-dyfpv8l-n_Xq3o3hnBXNC6GiRv18s";
 let sheetName = "plants";
 
@@ -11,18 +11,7 @@ let _client: sheets_v4.Sheets;
 
 const getClient = () => {
   if (!_client) {
-    // https://stackoverflow.com/questions/30400341/environment-variables-containing-newlines-in-node
-    const privateKey = process.env.GOOGLE_ACCOUNT_private_key.replace(
-      /\\n/g,
-      "\n"
-    );
-    const authClient = new google.auth.GoogleAuth({
-      scopes: SCOPES,
-      credentials: {
-        private_key: privateKey,
-        client_email: process.env.GOOGLE_ACCOUNT_client_email,
-      },
-    });
+    const authClient = getGoogleAuthClient();
     _client = google.sheets({
       version: "v4",
       auth: authClient,

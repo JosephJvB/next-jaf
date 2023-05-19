@@ -23,6 +23,9 @@ Vegetation Hydration Station : VHS
 4. Create/Update plant details
 
 - Image Upload
+  - https://developers.google.com/photos/library/guides/get-started
+  - https://developers.google.com/photos/library/guides/upload-media
+  - https://github.com/roopakv/google-photos/
 - Set Name
 - Set Hydration cycle
 - Plant details from GoogleSheets so gerry can update it easily too

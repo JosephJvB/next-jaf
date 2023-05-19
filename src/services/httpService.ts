@@ -1,4 +1,4 @@
-import { Plant } from "@/types/plant";
+import { Plant } from "../types/plant";
 
 async function getPlants(): Promise<Plant[]> {
   const response = await fetch(`/api/v1/plants`);
