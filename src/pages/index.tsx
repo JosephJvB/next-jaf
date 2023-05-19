@@ -8,7 +8,6 @@ export interface HomeProps {
 }
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   const rows = await sheetService.getRows("A:H");
-  console.log(rows);
   const plants = rows.slice(1).map((r) => sheetService.rowToPlant(r));
   return {
     props: {
