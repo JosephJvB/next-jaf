@@ -24,9 +24,6 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   const router = useRouter();
 
   const handleChange = async (files: FileList | null) => {
-    if (typeof window === "undefined") {
-      return;
-    }
     if (!files) {
       return;
     }
@@ -44,20 +41,16 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     };
     image.src = url;
   };
+
   const handleSubmit = async () => {
     if (!file) {
-      return;
-    }
-    const googleAuthToken = localStorage.getItem("googleAuth");
-    if (!googleAuthToken) {
       return;
     }
     setLoading(true);
     try {
       // todo upload progress
-      const fileName = `${props.plant.slug}.${Date.now()}`;
-      await photosService.uploadFile(googleAuthToken, fileName, file);
-      router.push("/");
+      const r = await photosService.uploadFile(props.plant, file);
+      console.log({ r });
     } catch (e) {
       console.error("http.uploadImage failed");
       console.error(e);

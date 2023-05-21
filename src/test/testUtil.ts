@@ -20,10 +20,10 @@ export const getRandomPlant = (): Plant => {
     plantName: name,
     slug: slugify(name),
     imageSrc: faker.image.url(),
-    imageAlt: faker.lorem.sentence(),
     hydrationInterval: day * hydrationIntervalDays,
     lastHydrated: pastDate.getTime(),
     foodInterval: day * 7 * faker.number.int({ min: 1, max: 5 }),
     lastFed: pastDate.getTime(),
+    albumId: "123",
   };
 };

@@ -27,6 +27,7 @@ export const getRows = async (range: string) => {
   });
   return res.data.values || [];
 };
+
 export const addRow = async (range: string, row: string[]) => {
   const client = getClient();
   await client.spreadsheets.values.append({
@@ -41,6 +42,7 @@ export const addRow = async (range: string, row: string[]) => {
     },
   });
 };
+
 export const updateRow = async (range: string, row: string[]) => {
   const client = getClient();
   await client.spreadsheets.values.update({
@@ -63,24 +65,24 @@ export const deleteRow = async (range: string) => {
   });
 };
 
-export const rowToPlant = (row: string[]) => ({
+export const rowToPlant = (row: string[]): Plant => ({
   slug: row[0],
   plantName: row[1],
   imageSrc: row[2],
-  imageAlt: row[3],
-  hydrationInterval: parseInt(row[4]),
-  lastHydrated: parseInt(row[5]),
-  foodInterval: parseInt(row[6]),
-  lastFed: parseInt(row[7]),
+  hydrationInterval: parseInt(row[3]),
+  lastHydrated: parseInt(row[4]),
+  foodInterval: parseInt(row[5]),
+  lastFed: parseInt(row[6]),
+  albumId: row[7],
 });
 
 export const plantToRow = (plant: Plant) => [
   plant.slug,
   plant.plantName,
   plant.imageSrc,
-  plant.imageAlt,
   plant.hydrationInterval,
   plant.lastHydrated,
   plant.foodInterval,
   plant.lastFed,
+  plant.albumId,
 ];

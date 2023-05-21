@@ -1,18 +1,13 @@
-import { LocalStorage } from "../constants";
-import { UploadResponse } from "../types/google";
-import { Plant } from "../types/plant";
+import fs from "fs";
 
 // https://developers.google.com/photos/library/guides/upload-media
 
-export const uploadFile = async (plant: Plant, file: File) => {
-  const authToken = localStorage.getItem(LocalStorage.AuthKey);
-  if (!authToken) {
-    throw new Error("No auth token in localStorage");
-  }
-  const fileName = `${plant.plantName}.${Date.now()}`;
+const authToken = "123";
 
+// svg files cause upload to fail, what a world!
+
+export const uploadFile = async (fileName, file) => {
   const uploadToken = await getUploadToken(authToken, fileName, file);
-  console.log({ uploadToken });
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/json");
@@ -22,10 +17,11 @@ export const uploadFile = async (plant: Plant, file: File) => {
       method: "POST",
       headers,
       body: JSON.stringify({
-        albumId: plant.albumId,
+        albumId:
+          "AA6CZZhByy-ihxrBvQjFtYr4VqZ91I0AYJI-IWiJUuus7arbQPERNRP4YasnW_s1YJ991HNySH6L",
         newMediaItems: [
           {
-            description: `progress photo of ${plant.plantName}`,
+            description: "plant image",
             simpleMediaItem: {
               fileName,
               uploadToken,
@@ -39,27 +35,17 @@ export const uploadFile = async (plant: Plant, file: File) => {
     throw res;
   }
 
-  const results: UploadResponse = await res.json();
-  if (results.newMediaItemResults[0].status.message !== "Success") {
-    throw results.newMediaItemResults[0].status;
-  }
-
-  return results.newMediaItemResults[0].mediaItem;
+  return res.json();
 };
 
-const getUploadToken = async (
-  authToken: string,
-  fileName: string,
-  file: File
-) => {
+const getUploadToken = async (authToken, fileName, file) => {
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/octet-stream");
-  headers.append("Content-Length", file.size.toString());
+  headers.append("Content-Length", file.length.toString());
   headers.append("X-Goog-Upload-File-Name", fileName);
-  headers.append("X-Goog-Upload-Content-Type", file.type);
+  headers.append("X-Goog-Upload-Content-Type", "image/x-icon");
   headers.append("X-Goog-Upload-Protocol", "raw");
-
   const res = await fetch("https://photoslibrary.googleapis.com/v1/uploads", {
     method: "POST",
     headers,
@@ -70,3 +56,10 @@ const getUploadToken = async (
   }
   return res.text();
 };
+
+const x = async () => {
+  const file = fs.readFileSync("./public/favicon.ico");
+  const r = await uploadFile("test", file);
+  console.log({ ...r.newMediaItemResults[0] });
+};
+x();

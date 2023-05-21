@@ -80,7 +80,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
             height="150"
             className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"
             src={props.plant.imageSrc}
-            alt={props.plant.imageAlt}
+            alt={props.plant.plantName}
           />
           <p className="text-xs text-gray-500">{lastHydratedDateStr}</p>
         </div>

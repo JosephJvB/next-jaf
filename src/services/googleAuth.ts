@@ -15,7 +15,7 @@ export const getOAuth2Client = () => {
     _oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_OAUTH_client_id,
       process.env.GOOGLE_OAUTH_client_secret,
-      "http://localhost:3000/callback"
+      "http://localhost:3000/plants"
     );
   }
   return _oauth2Client;

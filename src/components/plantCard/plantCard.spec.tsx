@@ -12,7 +12,7 @@ describe("<PlantCard />", () => {
       plant,
     });
 
-    const imageEl: HTMLImageElement = screen.getByAltText(plant.imageAlt);
+    const imageEl: HTMLImageElement = screen.getByAltText(plant.plantName);
     expect(imageEl).toBeDefined();
     // TODO fix: failing cos of next/image component
     expect(imageEl.src).toEqual(plant.imageSrc);
