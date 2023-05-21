@@ -1,4 +1,3 @@
-import fs from "fs";
 import { google, sheets_v4 } from "googleapis";
 import { Plant } from "../types/plant";
 import { getGoogleAuthClient } from "./googleAuth";

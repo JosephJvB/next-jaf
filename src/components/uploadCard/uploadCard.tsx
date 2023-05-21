@@ -1,12 +1,12 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import Image from "next/image";
 import { CameraSVG } from "../svgs/cameraSVG";
 import { toDateStr } from "../../util";
 import { useRouter } from "next/router";
 import { Plant } from "../../types/plant";
-import http from "../../services/httpService";
 import { ArrowLeftSVG } from "../svgs/arrowLeftSVG";
 import Link from "next/link";
+import * as photosService from "../../services/photosLibraryService";
 
 interface ImageProps {
   src: string;
@@ -16,8 +16,6 @@ interface ImageProps {
 }
 export interface UploadCardProps {
   plant: Plant;
-  uploadUrl: string;
-  s3Key: string;
 }
 export const UploadCard: FC<UploadCardProps> = (props) => {
   const [file, setFile] = useState<File | null>(null);
@@ -50,11 +48,15 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     if (!file) {
       return;
     }
+    const googleAuthToken = localStorage.getItem("googleAuth");
+    if (!googleAuthToken) {
+      return;
+    }
     setLoading(true);
     try {
       // todo upload progress
-      // await http.uploadImage_S3(props.uploadUrl, file);
-      // then update dynamodb
+      const fileName = `${props.plant.slug}.${Date.now()}`;
+      await photosService.uploadFile(googleAuthToken, fileName, file);
       router.push("/");
     } catch (e) {
       console.error("http.uploadImage failed");
