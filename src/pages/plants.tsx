@@ -4,6 +4,8 @@ import { GetServerSideProps } from "next";
 import { LocalStorage } from "../constants";
 import { getAllPlants } from "../services/server/sheetService";
 import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export interface PlantsProps {
   plants: Plant[];
@@ -39,11 +41,18 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
 };
 
 export default function Plants(props: PlantsProps) {
+  const router = useRouter();
   if (typeof window !== "undefined") {
-    if (props.googleAuthToken) {
+    const existToken = localStorage.getItem(LocalStorage.AuthKey);
+    if (props.googleAuthToken && !existToken) {
       localStorage.setItem(LocalStorage.AuthKey, props.googleAuthToken);
     }
   }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      router.replace(router.pathname);
+    }
+  }, [router.isReady]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24">

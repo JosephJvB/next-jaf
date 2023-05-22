@@ -21,7 +21,6 @@ export default function Home(props: HomeProps) {
     const token = localStorage.getItem(LocalStorage.AuthKey);
     if (token) {
       router.push("/plants");
-      return null;
     }
   }
   return (
