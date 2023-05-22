@@ -1,6 +1,28 @@
 import { LocalStorage } from "../constants";
-import { UploadResponse } from "../types/google";
+import { MediaItem, UploadResponse } from "../types/google";
 import { Plant } from "../types/plant";
+
+export const getMediaItem = async (itemId: string): Promise<MediaItem> => {
+  const authToken = localStorage.getItem(LocalStorage.AuthKey);
+  if (!authToken) {
+    throw new Error("No auth token in localStorage");
+  }
+
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${authToken}`);
+  headers.append("Content-Type", "application/json");
+
+  const res = await fetch(
+    `https://photoslibrary.googleapis.com/v1/mediaItems/${itemId}`,
+    {
+      headers,
+    }
+  );
+  if (!res.ok) {
+    throw res;
+  }
+  return res.json();
+};
 
 // https://developers.google.com/photos/library/guides/upload-media
 
@@ -12,7 +34,6 @@ export const uploadFile = async (plant: Plant, file: File) => {
   const fileName = `${plant.plantName}.${Date.now()}`;
 
   const uploadToken = await getUploadToken(authToken, fileName, file);
-  console.log({ uploadToken });
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/json");

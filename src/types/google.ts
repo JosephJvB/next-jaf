@@ -8,7 +8,7 @@ export interface GoogleAlbum {
   mediaItemsCount: number;
 }
 
-export interface MediaItem {
+export interface SimpleMediaItem {
   id: string;
   description: string;
   productUrl: string;
@@ -20,13 +20,44 @@ export interface MediaItem {
   };
   filename: string;
 }
-export interface MediaItemResult {
+export interface SimpleMediaItemResult {
   uploadToken: string;
   status: {
     message: string;
   };
-  mediaItem: MediaItem;
+  mediaItem: SimpleMediaItem;
 }
 export interface UploadResponse {
-  newMediaItemResults: MediaItemResult[];
+  newMediaItemResults: Array<{
+    uploadToken: string;
+    status: {
+      message: string;
+    };
+    mediaItem: SimpleMediaItem;
+  }>;
+}
+export interface MediaItem {
+  id: string;
+  description: string;
+  productUrl: string;
+  baseUrl: string;
+  mimeType: string;
+  filename: string;
+  mediaMetadata: {
+    width: string | number;
+    height: string | number;
+    creationTime: string | number;
+    photo: {
+      cameraMake: string;
+      cameraModel: string;
+      focalLength: string | number;
+      apertureFNumber: string | number;
+      isoEquivalent: any;
+      exposureTime: string | number;
+    };
+  };
+  contributorInfo: {
+    profilePictureBaseUrl: string;
+    displayName: string;
+  };
 }

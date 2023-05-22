@@ -7,4 +7,5 @@ export interface Plant {
   foodInterval: number;
   lastFed: number;
   albumId: string;
+  sheetRow: number;
 }

@@ -2,10 +2,10 @@ import { Plant } from "../types/plant";
 import { Swiper } from "../components/swiper/swiper";
 import { GetServerSideProps } from "next";
 import * as sheetService from "../services/sheetService";
-import { getAccessTokenFromCode } from "../services/googleAuth";
+import { getAccessTokenFromCode } from "../services/clients/googleOAuth2";
 import { LocalStorage } from "../constants";
 
-export interface HomeProps {
+export interface PlantsProps {
   plants: Plant[];
   googleAuthToken?: string;
 }
@@ -17,16 +17,15 @@ const loadToken = async (code: string) => {
   return getAccessTokenFromCode(code);
 };
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async (
+export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   context
 ) => {
-  const [rows, token] = await Promise.all([
-    sheetService.getRows("A:H"),
+  const [plants, token] = await Promise.all([
+    sheetService.getAllPlants(),
     loadToken(context.query.code as string),
   ]);
-  const plants = rows.slice(1).map((r) => sheetService.rowToPlant(r));
 
-  const props: HomeProps = {
+  const props: PlantsProps = {
     plants,
   };
 
@@ -39,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
   };
 };
 
-export default function Home(props: HomeProps) {
+export default function Home(props: PlantsProps) {
   if (typeof window !== "undefined") {
     if (props.googleAuthToken) {
       localStorage.setItem(LocalStorage.AuthKey, props.googleAuthToken);

@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getOAuth2Url } from "../services/googleAuth";
+import { getOAuth2Url } from "../services/clients/googleOAuth2";
 import { useRouter } from "next/router";
 import { LocalStorage } from "../constants";
 
@@ -25,8 +25,8 @@ export default function Home(props: HomeProps) {
     }
   }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between py-24">
-      <div className="border-grey-200 relative flex h-[80vh] max-h-[600px] w-[300px] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
+    <main className="flex min-h-screen flex-col items-center justify-between px-4 py-24">
+      <div className="border-grey-200 relative flex h-[80vh] max-h-[600px] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
         <a href={props.googleAuthUrl}>Login</a>
       </div>
     </main>
