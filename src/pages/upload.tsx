@@ -1,15 +1,15 @@
 import { GetServerSideProps } from "next";
 import { Plant } from "../types/plant";
 import { UploadCard } from "../components/uploadCard/uploadCard";
-import * as sheetService from "../services/sheetService";
 import { useRouter } from "next/router";
+import { getAllPlants } from "../services/server/sheetService";
 export interface UploadProps {
   plant?: Plant;
 }
 export const getServerSideProps: GetServerSideProps<UploadProps> = async (
   context
 ) => {
-  const plants = await sheetService.getAllPlants();
+  const plants = await getAllPlants();
   const plant = plants.find((p) => p.slug === context.query.slug);
 
   return {

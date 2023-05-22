@@ -1,7 +1,7 @@
 import { GoogleAuth } from "google-auth-library";
 import { JSONClient } from "google-auth-library/build/src/auth/googleauth";
 import { google } from "googleapis";
-import { GoogleScopes } from "../../constants";
+import { GoogleScopes } from "../../../constants";
 
 let _client: GoogleAuth<JSONClient>;
 

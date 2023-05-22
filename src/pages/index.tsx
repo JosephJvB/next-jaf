@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
-import { getOAuth2Url } from "../services/clients/googleOAuth2";
 import { useRouter } from "next/router";
 import { LocalStorage } from "../constants";
+import { getOAuth2Url } from "../services/server/auth/oAuth2";
 
 export interface HomeProps {
   googleAuthUrl: string;

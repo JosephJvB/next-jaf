@@ -1,9 +1,9 @@
 import { Plant } from "../types/plant";
 import { Swiper } from "../components/swiper/swiper";
 import { GetServerSideProps } from "next";
-import * as sheetService from "../services/sheetService";
-import { getAccessTokenFromCode } from "../services/clients/googleOAuth2";
 import { LocalStorage } from "../constants";
+import { getAllPlants } from "../services/server/sheetService";
+import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
 
 export interface PlantsProps {
   plants: Plant[];
@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   context
 ) => {
   const [plants, token] = await Promise.all([
-    sheetService.getAllPlants(),
+    getAllPlants(),
     loadToken(context.query.code as string),
   ]);
 
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   };
 };
 
-export default function Home(props: PlantsProps) {
+export default function Plants(props: PlantsProps) {
   if (typeof window !== "undefined") {
     if (props.googleAuthToken) {
       localStorage.setItem(LocalStorage.AuthKey, props.googleAuthToken);

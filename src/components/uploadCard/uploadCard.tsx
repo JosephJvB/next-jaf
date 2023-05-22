@@ -6,9 +6,12 @@ import { useRouter } from "next/router";
 import { Plant } from "../../types/plant";
 import { ArrowLeftSVG } from "../svgs/arrowLeftSVG";
 import Link from "next/link";
-import * as photosService from "../../services/photosLibraryService";
-import * as httpService from "../../services/httpService";
 import { useForm } from "react-hook-form";
+import {
+  getMediaItem,
+  uploadFile,
+} from "../../services/browser/photosLibraryService";
+import { updatePlant } from "../../services/browser/sheetsService";
 
 interface FormValues {
   water: boolean;
@@ -19,7 +22,7 @@ interface ImageProps {
   src: string;
   height: number;
   width: number;
-  ts: Date;
+  ts: number;
 }
 export interface UploadCardProps {
   plant: Plant;
@@ -51,7 +54,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
         src: url,
         height: image.height,
         width: image.width,
-        ts: new Date(),
+        ts: Date.now(),
       });
       setFile(file);
     };
@@ -65,21 +68,18 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     setLoading(true);
     try {
       const nextPlant = { ...props.plant };
-      const n = Date.now();
+      nextPlant.imageTS = image?.ts ?? Date.now();
       if (values.food) {
-        nextPlant.lastFed = n;
+        nextPlant.lastFed = nextPlant.imageTS;
       }
       if (values.water) {
-        nextPlant.lastHydrated = n;
+        nextPlant.lastHydrated = nextPlant.imageTS;
       }
       // todo upload progress
-      const uploadResult = await photosService.uploadFile(
-        props.plant,
-        values.photo
-      );
-      const mediaItem = await photosService.getMediaItem(uploadResult.id);
+      const uploadResult = await uploadFile(props.plant, values.photo);
+      const mediaItem = await getMediaItem(uploadResult.id);
       nextPlant.imageSrc = mediaItem.baseUrl;
-      await httpService.updatePlant(nextPlant);
+      await updatePlant(nextPlant);
     } catch (e) {
       console.error("http.uploadImage failed");
       console.error(e);
@@ -87,7 +87,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     setLoading(false);
   };
 
-  const dateStr = image && toDateStr(image.ts);
+  const dateStr = image && toDateStr(new Date(image.ts));
   return (
     <div className="border-grey-200 relative flex h-[80vh] max-h-[600px] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
       <Link href="/" className="absolute left-2 top-3">

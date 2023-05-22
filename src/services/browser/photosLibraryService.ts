@@ -1,6 +1,8 @@
-import { LocalStorage } from "../constants";
-import { MediaItem, UploadResponse } from "../types/google";
-import { Plant } from "../types/plant";
+import { LocalStorage } from "../../constants";
+import { MediaItem, UploadResponse } from "../../types/google";
+import { Plant } from "../../types/plant";
+
+const baseUrl = "https://photoslibrary.googleapis.com/v1";
 
 export const getMediaItem = async (itemId: string): Promise<MediaItem> => {
   const authToken = localStorage.getItem(LocalStorage.AuthKey);
@@ -12,12 +14,9 @@ export const getMediaItem = async (itemId: string): Promise<MediaItem> => {
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/json");
 
-  const res = await fetch(
-    `https://photoslibrary.googleapis.com/v1/mediaItems/${itemId}`,
-    {
-      headers,
-    }
-  );
+  const res = await fetch(`${baseUrl}/mediaItems/${itemId}`, {
+    headers,
+  });
   if (!res.ok) {
     throw res;
   }
@@ -37,25 +36,23 @@ export const uploadFile = async (plant: Plant, file: File) => {
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/json");
-  const res = await fetch(
-    "https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate",
-    {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        albumId: plant.albumId,
-        newMediaItems: [
-          {
-            description: `progress photo of ${plant.plantName}`,
-            simpleMediaItem: {
-              fileName,
-              uploadToken,
-            },
+  console.log(plant);
+  const res = await fetch(`${baseUrl}/mediaItems:batchCreate`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      albumId: plant.albumId,
+      newMediaItems: [
+        {
+          description: `progress photo of ${plant.plantName}`,
+          simpleMediaItem: {
+            fileName,
+            uploadToken,
           },
-        ],
-      }),
-    }
-  );
+        },
+      ],
+    }),
+  });
   if (!res.ok) {
     throw res;
   }
@@ -81,7 +78,7 @@ const getUploadToken = async (
   headers.append("X-Goog-Upload-Content-Type", file.type);
   headers.append("X-Goog-Upload-Protocol", "raw");
 
-  const res = await fetch("https://photoslibrary.googleapis.com/v1/uploads", {
+  const res = await fetch(`${baseUrl}/uploads`, {
     method: "POST",
     headers,
     body: file,

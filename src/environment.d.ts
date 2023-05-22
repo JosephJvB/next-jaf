@@ -10,6 +10,7 @@ declare global {
       GOOGLE_SERVICEACCOUNT_client_email: string;
       GOOGLE_OAUTH_client_id: string;
       GOOGLE_OAUTH_client_secret: string;
+      APP_DOMAIN: string;
     }
   }
 }

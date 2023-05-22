@@ -6,11 +6,6 @@ import { WaterDropSVG } from "../svgs/waterDropSVG";
 import { Plant } from "../../types/plant";
 import { SaplingSVG } from "../svgs/saplingSVG";
 
-const sec = 1000;
-const min = sec * 60;
-const hour = min * 60;
-const day = hour * 24;
-
 export interface PlantCardProps {
   plant: Plant;
 }
@@ -27,32 +22,14 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
     Math.round(
       ((Date.now() - props.plant.lastFed) / props.plant.foodInterval) * 100
     );
-  const getCountdown = () => {
-    const next = props.plant.lastHydrated + props.plant.hydrationInterval;
-    const now = Date.now();
-    if (now >= next) {
-      return "Water me!";
-    }
-    const diff =
-      props.plant.lastHydrated + props.plant.hydrationInterval - Date.now();
-    const days = Math.floor(diff / day);
-    const hrs = Math.floor((diff % day) / hour);
-    const mins = Math.floor((diff % hour) / min);
-    const secs = Math.floor((diff % min) / sec);
-    return [`${days} days`, `${hrs} hrs`, `${mins} mins`, `${secs} secs`]
-      .filter((str) => !str.startsWith("0 ") && !str.startsWith("-"))
-      .join(" ");
-  };
   const [hydrationPercent, setHydrationPercent] = useState(() =>
     getHydrationPercent()
   );
   const [foodPercent, setFoodPercent] = useState(() => getFoodPercent());
-  const [countdown, setCountdown] = useState(() => getCountdown());
   useEffect(() => {
     const interval = setInterval(() => {
       setFoodPercent(getFoodPercent());
       setHydrationPercent(getHydrationPercent());
-      setCountdown(getCountdown());
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -63,10 +40,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
   const green = `rgba(34, 197, 94, 1) ${foodPercent}%`;
   const greenFade = `rgba(34, 197, 94, 0.2) ${foodPercent}%`;
 
-  const lastHydratedDate = new Date(props.plant.lastHydrated);
-  const lastHydratedDateStr = toDateStr(lastHydratedDate);
-  const lastFedDate = new Date(props.plant.lastFed);
-  const lastFedDateStr = toDateStr(lastFedDate);
+  const imageDateStr = toDateStr(new Date(props.plant.imageTS));
   return (
     <div className="border-grey-200 flex h-[80vh] max-h-[600px] w-[100%] items-center justify-center rounded-lg border-2 border-solid bg-white px-2 py-8">
       <Link
@@ -82,7 +56,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
             src={props.plant.imageSrc}
             alt={props.plant.plantName}
           />
-          <p className="text-xs text-gray-500">{lastHydratedDateStr}</p>
+          <p className="text-xs text-gray-500">{imageDateStr}</p>
         </div>
         <h3 className="text-xl text-blue-400">{props.plant.plantName}</h3>
         {/* <p>{countdown}</p> */}

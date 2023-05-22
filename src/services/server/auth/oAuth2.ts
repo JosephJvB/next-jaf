@@ -1,17 +1,17 @@
 import { Auth, google } from "googleapis";
-import { GoogleScopes } from "../../constants";
+import { GoogleScopes } from "../../../constants";
 
-let _oauth2Client: Auth.OAuth2Client;
+let _client: Auth.OAuth2Client;
 
 const getOAuth2Client = () => {
-  if (!_oauth2Client) {
-    _oauth2Client = new google.auth.OAuth2(
+  if (!_client) {
+    _client = new google.auth.OAuth2(
       process.env.GOOGLE_OAUTH_client_id,
       process.env.GOOGLE_OAUTH_client_secret,
-      "http://localhost:3000/plants"
+      `${process.env.APP_DOMAIN}/plants`
     );
   }
-  return _oauth2Client;
+  return _client;
 };
 
 export const getOAuth2Url = () => {
