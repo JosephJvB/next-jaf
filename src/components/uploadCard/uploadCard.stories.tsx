@@ -24,8 +24,6 @@ type Story = StoryObj<typeof UploadCard>;
 export const Primary: Story = {
   args: {
     plant: getRandomPlant(),
-    uploadUrl: "123",
-    s3Key: "s3 key",
   },
   render: (props) => <UploadCard {...props} />,
 };

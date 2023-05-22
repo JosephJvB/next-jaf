@@ -25,5 +25,7 @@ export const getRandomPlant = (): Plant => {
     foodInterval: day * 7 * faker.number.int({ min: 1, max: 5 }),
     lastFed: pastDate.getTime(),
     albumId: "123",
+    imageTS: Date.now(),
+    sheetRow: 2,
   };
 };
