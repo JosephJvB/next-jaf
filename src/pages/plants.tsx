@@ -52,7 +52,7 @@ export default function Plants(props: PlantsProps) {
     if (typeof window !== "undefined") {
       router.replace(router.pathname);
     }
-  }, [router.isReady]);
+  }, [router, router.isReady]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
