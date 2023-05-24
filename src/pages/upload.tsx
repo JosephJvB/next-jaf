@@ -3,6 +3,7 @@ import { Plant } from "../types/plant";
 import { UploadCard } from "../components/uploadCard/uploadCard";
 import { useRouter } from "next/router";
 import { getAllPlants } from "../services/server/sheetService";
+import { getGoogleToken } from "../services/browser/auth";
 export interface UploadProps {
   plant?: Plant;
 }
@@ -22,6 +23,12 @@ export const getServerSideProps: GetServerSideProps<UploadProps> = async (
 export default function Upload(props: UploadProps) {
   const router = useRouter();
   const slug = router.isReady ? router.query.slug : "";
+  if (typeof window !== "undefined") {
+    const token = getGoogleToken();
+    if (!token) {
+      router.push("/");
+    }
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between px-4 py-24">
       {props.plant && <UploadCard plant={props.plant} />}

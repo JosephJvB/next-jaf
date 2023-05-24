@@ -1,5 +1,6 @@
 export const LocalStorage = {
-  AuthKey: "GoogleAuthKey",
+  Token: "GoogleAuthToken",
+  TokenExp: "GoogleAuthTokenExp",
 };
 
 export const GoogleScopes = [

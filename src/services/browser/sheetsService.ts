@@ -1,11 +1,12 @@
-import { GoogleSpreadsheetId, LocalStorage } from "../../constants";
+import { GoogleSpreadsheetId } from "../../constants";
 import { Plant } from "../../types/plant";
 import { plantToRow } from "../../util";
+import { getGoogleToken } from "./auth";
 
 const baseUrl = "https://sheets.googleapis.com/v4";
 
 export const updatePlant = async (plant: Plant) => {
-  const authToken = localStorage.getItem(LocalStorage.AuthKey);
+  const authToken = getGoogleToken();
   if (!authToken) {
     throw new Error("No auth token in localStorage");
   }

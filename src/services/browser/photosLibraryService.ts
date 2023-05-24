@@ -1,11 +1,11 @@
-import { LocalStorage } from "../../constants";
 import { MediaItem, UploadResponse } from "../../types/google";
 import { Plant } from "../../types/plant";
+import { getGoogleToken } from "./auth";
 
 const baseUrl = "https://photoslibrary.googleapis.com/v1";
 
 export const getMediaItem = async (itemId: string): Promise<MediaItem> => {
-  const authToken = localStorage.getItem(LocalStorage.AuthKey);
+  const authToken = getGoogleToken();
   if (!authToken) {
     throw new Error("No auth token in localStorage");
   }
@@ -26,7 +26,7 @@ export const getMediaItem = async (itemId: string): Promise<MediaItem> => {
 // https://developers.google.com/photos/library/guides/upload-media
 
 export const uploadFile = async (plant: Plant, file: File) => {
-  const authToken = localStorage.getItem(LocalStorage.AuthKey);
+  const authToken = getGoogleToken();
   if (!authToken) {
     throw new Error("No auth token in localStorage");
   }

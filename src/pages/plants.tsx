@@ -1,11 +1,11 @@
 import { Plant } from "../types/plant";
 import { Swiper } from "../components/swiper/swiper";
 import { GetServerSideProps } from "next";
-import { LocalStorage } from "../constants";
 import { getAllPlants } from "../services/server/sheetService";
 import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { getGoogleToken, setGoogleToken } from "../services/browser/auth";
 
 export interface PlantsProps {
   plants: Plant[];
@@ -43,9 +43,12 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
 export default function Plants(props: PlantsProps) {
   const router = useRouter();
   if (typeof window !== "undefined") {
-    const existToken = localStorage.getItem(LocalStorage.AuthKey);
-    if (props.googleAuthToken && !existToken) {
-      localStorage.setItem(LocalStorage.AuthKey, props.googleAuthToken);
+    if (props.googleAuthToken) {
+      setGoogleToken(props.googleAuthToken);
+    }
+    const token = getGoogleToken();
+    if (!token) {
+      router.push("/");
     }
   }
   useEffect(() => {
