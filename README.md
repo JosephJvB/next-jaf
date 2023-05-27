@@ -1,5 +1,10 @@
 Vegetation Hydration Station : VHS
 
+Have issue with photos, google photos baseUrl valid for only 1hr
+want to do batchGetMediaItems at load (server)
+need valid OAuth2 token
+but atm, only storing OAuth2 token on client. Oops!
+
 1. Home screen list plants
 
 - Loading state
