@@ -36,7 +36,6 @@ export const uploadFile = async (plant: Plant, file: File) => {
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);
   headers.append("Content-Type", "application/json");
-  console.log(plant);
   const res = await fetch(`${baseUrl}/mediaItems:batchCreate`, {
     method: "POST",
     headers,

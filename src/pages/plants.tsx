@@ -27,6 +27,11 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
     loadToken(context.query.code as string),
   ]);
 
+  // get plant urls here?
+  // i need a valid authToken here, but it must be OAuth2 token
+  // const mediaItemIds = plants.map(p => p.mediaItemId).filter(Boolean)
+  // const mediaItems =
+
   const props: PlantsProps = {
     plants,
   };
@@ -53,7 +58,9 @@ export default function Plants(props: PlantsProps) {
   }
   useEffect(() => {
     if (typeof window !== "undefined") {
-      router.replace(router.pathname);
+      if (Object.keys(router.query).length) {
+        router.replace(router.pathname);
+      }
     }
   }, [router, router.isReady]);
 
