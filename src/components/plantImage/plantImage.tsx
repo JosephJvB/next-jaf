@@ -17,7 +17,6 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
   };
 
   const imageSrc = queryClient.getQueryData<string>(props.plant.slug);
-
   useQuery(props.plant.slug, getPlantImage, {
     cacheTime: hour - min * 5,
     enabled: !imageSrc,

@@ -58,9 +58,8 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
       clearToken();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [props.plant.slug],
-      });
+      // force refetch on plantImage
+      queryClient.setQueryData(props.plant.slug, undefined);
       router.push("/");
     },
   });
