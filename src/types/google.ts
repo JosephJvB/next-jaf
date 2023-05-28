@@ -61,3 +61,9 @@ export interface MediaItem {
     displayName: string;
   };
 }
+export interface MediaItemResult {
+  mediaItem: MediaItem;
+  status: {
+    message: string;
+  };
+}

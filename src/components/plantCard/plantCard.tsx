@@ -5,6 +5,7 @@ import { toDateStr } from "../../util";
 import { WaterDropSVG } from "../svgs/waterDropSVG";
 import { Plant } from "../../types/plant";
 import { SaplingSVG } from "../svgs/saplingSVG";
+import { PlantImage } from "../plantImage/plantImage";
 
 export interface PlantCardProps {
   plant: Plant;
@@ -49,14 +50,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
         className="flex h-fit flex-col items-center justify-center space-y-6"
       >
         <div className="flex flex-col items-center justify-center">
-          <Image
-            draggable={false}
-            width="100"
-            height="150"
-            className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"
-            src={props.plant.imageSrc}
-            alt={props.plant.plantName}
-          />
+          <PlantImage plant={props.plant} />
           <p className="text-xs text-gray-500">{imageDateStr}</p>
         </div>
         <h3 className="text-xl text-blue-400">{props.plant.plantName}</h3>

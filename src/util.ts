@@ -18,7 +18,7 @@ export const rowToPlant = (row: string[], idx: number): Plant => ({
   hydrationInterval: parseInt(row[2]),
   foodInterval: parseInt(row[3]),
   albumId: row[4],
-  imageSrc: row[5],
+  mediaItemId: row[5],
   imageTS: parseInt(row[6]),
   lastHydrated: parseInt(row[7]),
   lastFed: parseInt(row[8]),
@@ -27,7 +27,7 @@ export const rowToPlant = (row: string[], idx: number): Plant => ({
 
 // only update these props, Cols: F->H
 export const plantToRow = (plant: Plant) => [
-  plant.imageSrc, // F
+  plant.mediaItemId, // F
   plant.imageTS.toString(), // G
   plant.lastHydrated.toString(), // H
   plant.lastFed.toString(), // I

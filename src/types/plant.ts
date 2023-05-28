@@ -4,7 +4,7 @@ export interface Plant {
   hydrationInterval: number;
   foodInterval: number;
   albumId: string;
-  imageSrc: string;
+  mediaItemId: string;
   imageTS: number;
   lastHydrated: number;
   lastFed: number;

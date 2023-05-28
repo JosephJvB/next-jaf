@@ -4,18 +4,22 @@ import { UploadCard } from "../components/uploadCard/uploadCard";
 import { useRouter } from "next/router";
 import { getAllPlants } from "../services/server/sheetService";
 import { getGoogleToken } from "../services/browser/auth";
+import { DehydratedState, QueryClient, dehydrate } from "react-query";
 export interface UploadProps {
   plant?: Plant;
+  dehydratedState: DehydratedState;
 }
 export const getServerSideProps: GetServerSideProps<UploadProps> = async (
   context
 ) => {
+  const queryClient = new QueryClient();
   const plants = await getAllPlants();
   const plant = plants.find((p) => p.slug === context.query.slug);
 
   return {
     props: {
       plant,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };

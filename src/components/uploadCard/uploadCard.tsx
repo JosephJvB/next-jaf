@@ -13,7 +13,7 @@ import {
 } from "../../services/browser/photosLibraryService";
 import { updatePlant } from "../../services/browser/sheetsService";
 import { clearToken } from "../../services/browser/auth";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 interface FormValues {
   water: boolean;
@@ -30,6 +30,7 @@ export interface UploadCardProps {
   plant: Plant;
 }
 export const UploadCard: FC<UploadCardProps> = (props) => {
+  const queryClient = useQueryClient();
   const [image, setImage] = useState<ImageProps | null>();
   const router = useRouter();
   const form = useForm<FormValues>();
@@ -48,8 +49,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
         return;
       }
       const uploadResult = await uploadFile(plant, photo);
-      const mediaItem = await getMediaItem(uploadResult.id);
-      plant.imageSrc = mediaItem.baseUrl;
+      plant.mediaItemId = uploadResult.id;
       await updatePlant(plant);
     },
     onError: (error) => {
@@ -57,7 +57,10 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
       console.error("submitMutation failed");
       clearToken();
     },
-    onSettled: () => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [props.plant.slug],
+      });
       router.push("/");
     },
   });

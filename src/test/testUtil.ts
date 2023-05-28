@@ -19,7 +19,7 @@ export const getRandomPlant = (): Plant => {
   return {
     plantName: name,
     slug: slugify(name),
-    imageSrc: faker.image.url(),
+    mediaItemId: "123",
     hydrationInterval: day * hydrationIntervalDays,
     lastHydrated: pastDate.getTime(),
     foodInterval: day * 7 * faker.number.int({ min: 1, max: 5 }),

@@ -6,10 +6,13 @@ import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getGoogleToken, setGoogleToken } from "../services/browser/auth";
+import { DehydratedState, QueryClient, dehydrate } from "react-query";
+import { batchGetMediaItems } from "../services/server/photosLibraryService";
 
 export interface PlantsProps {
-  plants: Plant[];
   googleAuthToken?: string;
+  dehydratedState: DehydratedState;
+  plants: Plant[];
 }
 
 const loadToken = async (code: string) => {
@@ -22,26 +25,36 @@ const loadToken = async (code: string) => {
 export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   context
 ) => {
-  const [plants, token] = await Promise.all([
+  const queryClient = new QueryClient();
+  const [plants, googleAuthToken] = await Promise.all([
     getAllPlants(),
     loadToken(context.query.code as string),
   ]);
 
-  // get plant urls here?
-  // i need a valid authToken here, but it must be OAuth2 token
-  // const mediaItemIds = plants.map(p => p.mediaItemId).filter(Boolean)
-  // const mediaItems =
-
-  const props: PlantsProps = {
-    plants,
-  };
-
-  if (token) {
-    props.googleAuthToken = token;
+  if (!googleAuthToken) {
+    return {
+      props: {
+        plants,
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
   }
 
+  // preload plant images on login - probably overkill tbh? Fine to load clientside on PlantImage component
+  const mediaIds = plants.map((p) => p.mediaItemId);
+  const mediaItems = await batchGetMediaItems(mediaIds, googleAuthToken);
+  mediaItems.forEach((item) => {
+    const plant = plants.find((p) => p.mediaItemId === item.id);
+    if (plant) {
+      queryClient.setQueryData(plant.slug, item.baseUrl);
+    }
+  });
   return {
-    props,
+    props: {
+      plants,
+      dehydratedState: dehydrate(queryClient),
+      googleAuthToken,
+    },
   };
 };
 
@@ -59,7 +72,9 @@ export default function Plants(props: PlantsProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (Object.keys(router.query).length) {
-        router.replace(router.pathname);
+        router.replace(router.pathname, router.pathname, {
+          shallow: true,
+        });
       }
     }
   }, [router, router.isReady]);

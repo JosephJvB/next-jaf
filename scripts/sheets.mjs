@@ -47,7 +47,7 @@ export const getRows = async (range) => {
 export const rowToPlant = (row) => ({
   slug: row[0],
   plantName: row[1],
-  imageSrc: row[2],
+  mediaItemId: row[2],
   hydrationInterval: parseInt(row[3]),
   lastHydrated: parseInt(row[4]),
   foodInterval: parseInt(row[5]),
@@ -57,7 +57,7 @@ export const rowToPlant = (row) => ({
 export const plantToRow = (plant) => [
   plant.slug,
   plant.plantName,
-  plant.imageSrc,
+  plant.mediaItemId,
   plant.hydrationInterval,
   plant.lastHydrated,
   plant.foodInterval,
