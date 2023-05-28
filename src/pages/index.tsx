@@ -7,6 +7,7 @@ export interface HomeProps {
   googleAuthUrl: string;
 }
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  // TODO: can we do this on client side? (not with current googleapis library)
   const googleAuthUrl = getOAuth2Url();
   return {
     props: {
@@ -15,6 +16,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   };
 };
 
+// TODO manual logout button
 export default function Home(props: HomeProps) {
   const router = useRouter();
   if (typeof window !== "undefined") {

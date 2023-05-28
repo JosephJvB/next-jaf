@@ -1,5 +1,7 @@
 import { LocalStorage, hour, min } from "../../constants";
 
+// TODO: Cookie with expiry would make more sense
+
 export const clearToken = () => {
   localStorage.removeItem(LocalStorage.Token);
   localStorage.removeItem(LocalStorage.TokenExp);

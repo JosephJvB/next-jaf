@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { CameraSVG } from "../svgs/cameraSVG";
 import { toDateStr } from "../../util";
@@ -7,12 +7,8 @@ import { Plant } from "../../types/plant";
 import { ArrowLeftSVG } from "../svgs/arrowLeftSVG";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import {
-  getMediaItem,
-  uploadFile,
-} from "../../services/browser/photosLibraryService";
+import { uploadFile } from "../../services/browser/photosLibraryService";
 import { updatePlant } from "../../services/browser/sheetsService";
-import { clearToken } from "../../services/browser/auth";
 import { useMutation, useQueryClient } from "react-query";
 
 interface FormValues {
@@ -29,6 +25,10 @@ interface ImageProps {
 export interface UploadCardProps {
   plant: Plant;
 }
+
+// TODO appropriate image size - scale by max width/height
+// TODO styling for radio buttons
+// TODO submit could be passed as a prop to form child
 export const UploadCard: FC<UploadCardProps> = (props) => {
   const queryClient = useQueryClient();
   const [image, setImage] = useState<ImageProps | null>();
@@ -44,6 +44,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   }, [photo]);
 
   const submitMutation = useMutation({
+    retry: 0,
     mutationFn: async (plant: Plant) => {
       if (!photo) {
         return;
@@ -55,7 +56,6 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     onError: (error) => {
       console.error(error);
       console.error("submitMutation failed");
-      clearToken();
     },
     onSuccess: () => {
       // force refetch on plantImage
@@ -72,6 +72,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     form.setValue("photo", lastFile);
   };
 
+  // TODO: util
   const loadImage = (f: File) => {
     const url = URL.createObjectURL(f);
     const image = new window.Image();

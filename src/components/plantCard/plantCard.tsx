@@ -11,6 +11,8 @@ export interface PlantCardProps {
   plant: Plant;
 }
 export const PlantCard: FC<PlantCardProps> = (props) => {
+  // TODO: reuse these two methods shared logic
+  // Could be a reusable component too, pass values and an SVG
   const getHydrationPercent = () =>
     Math.max(
       100 -

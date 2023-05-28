@@ -8,6 +8,7 @@ import { hour, min } from "../../constants";
 export interface PlantImageProps {
   plant: Plant;
 }
+// TODO set appropriate default size
 export const PlantImage: FC<PlantImageProps> = (props) => {
   const queryClient = useQueryClient();
 
@@ -20,6 +21,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
   useQuery(props.plant.slug, getPlantImage, {
     cacheTime: hour - min * 5,
     enabled: !imageSrc,
+    retry: 1,
   });
 
   if (!imageSrc) {
