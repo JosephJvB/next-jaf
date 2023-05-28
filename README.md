@@ -1,9 +1,19 @@
 Vegetation Hydration Station : VHS
 
-Have issue with photos, google photos baseUrl valid for only 1hr
-want to do batchGetMediaItems at load (server)
-need valid OAuth2 token
-but atm, only storing OAuth2 token on client. Oops!
+Todo: dev / live plant sheet / albums
+
+Using ReactQuery / QueryClient as a global store for Photo Urls & a way to load them
+
+QueryClient Data could be
+
+```js
+{
+  MediaItemId: BaseUrl;
+}
+```
+
+and that would always refetch as I want as well
+but then I'm storying more references / urls than I need
 
 1. Home screen list plants
 

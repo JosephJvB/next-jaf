@@ -1,7 +1,7 @@
 import { google, sheets_v4 } from "googleapis";
 import { getServiceAccountAuth } from "./auth/serviceAccount";
 import { GoogleSheetName, GoogleSpreadsheetId } from "../../constants";
-import { rowToPlant } from "../../util";
+import { rowToPlant } from "../../types/plant";
 
 // https://raw.githubusercontent.com/JosephJvB/gsheets-api/main/src/database/sheetClient.ts
 

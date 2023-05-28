@@ -12,16 +12,22 @@ export interface PlantCardProps {
 }
 export const PlantCard: FC<PlantCardProps> = (props) => {
   const getHydrationPercent = () =>
-    100 -
-    Math.round(
-      ((Date.now() - props.plant.lastHydrated) /
-        props.plant.hydrationInterval) *
-        100
+    Math.max(
+      100 -
+        Math.round(
+          ((Date.now() - props.plant.lastHydrated) /
+            props.plant.hydrationInterval) *
+            100
+        ),
+      0
     );
   const getFoodPercent = () =>
-    100 -
-    Math.round(
-      ((Date.now() - props.plant.lastFed) / props.plant.foodInterval) * 100
+    Math.max(
+      100 -
+        Math.round(
+          ((Date.now() - props.plant.lastFed) / props.plant.foodInterval) * 100
+        ),
+      0
     );
   const [hydrationPercent, setHydrationPercent] = useState(() =>
     getHydrationPercent()

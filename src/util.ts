@@ -12,27 +12,6 @@ export const slugify = (s: string) => {
   return s.replace(/ /g, "").toLowerCase();
 };
 
-export const rowToPlant = (row: string[], idx: number): Plant => ({
-  slug: row[0],
-  plantName: row[1],
-  hydrationInterval: parseInt(row[2]),
-  foodInterval: parseInt(row[3]),
-  albumId: row[4],
-  mediaItemId: row[5],
-  imageTS: parseInt(row[6]),
-  lastHydrated: parseInt(row[7]),
-  lastFed: parseInt(row[8]),
-  sheetRow: idx + 2,
-});
-
-// only update these props, Cols: F->H
-export const plantToRow = (plant: Plant) => [
-  plant.mediaItemId, // F
-  plant.imageTS.toString(), // G
-  plant.lastHydrated.toString(), // H
-  plant.lastFed.toString(), // I
-];
-
 // not used but dont wanna get rid of yet
 const getCountdown = (plant: Plant) => {
   const next = plant.lastHydrated + plant.hydrationInterval;

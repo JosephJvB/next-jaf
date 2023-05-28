@@ -39,7 +39,7 @@ const rows = [
     "hydrationInterval",
     "foodInterval",
     "albumId",
-    "imageUrl",
+    "mediaItemId",
     "imageTS",
     "lastHydrated",
     "lastFed",

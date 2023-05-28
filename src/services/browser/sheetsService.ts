@@ -1,6 +1,5 @@
 import { GoogleSpreadsheetId } from "../../constants";
-import { Plant } from "../../types/plant";
-import { plantToRow } from "../../util";
+import { Plant, plantToRow } from "../../types/plant";
 import { getGoogleToken } from "./auth";
 
 const baseUrl = "https://sheets.googleapis.com/v4";
