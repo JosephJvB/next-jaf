@@ -41,14 +41,19 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   }
 
   // preload plant images on login - probably overkill tbh? Fine to load clientside on PlantImage component
-  const mediaIds = plants.map((p) => p.mediaItemId);
-  const mediaItems = await batchGetMediaItems(mediaIds, googleAuthToken);
-  mediaItems.forEach((item) => {
-    const plant = plants.find((p) => p.mediaItemId === item.id);
-    if (plant) {
-      queryClient.setQueryData(plant.slug, item.baseUrl);
-    }
-  });
+  try {
+    const mediaIds = plants.map((p) => p.mediaItemId);
+    const mediaItems = await batchGetMediaItems(mediaIds, googleAuthToken);
+    mediaItems.forEach((item) => {
+      const plant = plants.find((p) => p.mediaItemId === item.id);
+      if (plant) {
+        queryClient.setQueryData(plant.slug, item.baseUrl);
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    console.error("Failed to load mediaItems @ server");
+  }
   return {
     props: {
       plants,
