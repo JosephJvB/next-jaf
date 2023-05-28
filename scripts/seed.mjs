@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import { google } from "googleapis";
 
+// process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME = "plants";
+
 // https://raw.githubusercontent.com/JosephJvB/gsheets-api/main/src/database/sheetClient.ts
 let spreadsheetId = "156cZe81ntgR_2-dyfpv8l-n_Xq3o3hnBXNC6GiRv18s";
 let sheetName = process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME;

@@ -110,11 +110,11 @@ const searchAlbum = async (albumId) => {
 const y = async () => {
   for (const { id, name } of albums) {
     const r = await searchAlbum(id);
-    console.log(name, r.mediaItems[0].id);
+    console.log(name, r.mediaItems);
   }
 };
 
-createAlbum("dev");
+// createAlbum("dev");
 // y();
 // e();
 
