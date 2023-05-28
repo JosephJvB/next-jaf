@@ -84,6 +84,8 @@ export default function Plants(props: PlantsProps) {
     }
   }, [router, router.isReady]);
 
+  // TODO order plants by most in need of water
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
       <Swiper plants={props.plants} />
