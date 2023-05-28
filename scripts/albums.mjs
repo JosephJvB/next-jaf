@@ -58,7 +58,7 @@ export const createAlbum = async (albumTitle) => {
     throw res;
   }
   const j = await res.json();
-  console.log({ j });
+  console.log(j);
 };
 
 const setupAlbums = async () => {
@@ -114,7 +114,8 @@ const y = async () => {
   }
 };
 
-y();
+createAlbum("dev");
+// y();
 // e();
 
 // albums

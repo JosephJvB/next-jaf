@@ -16,7 +16,7 @@ export const updatePlant = async (plant: Plant) => {
   const searchParams = new URLSearchParams();
   searchParams.append("valueInputOption", "RAW");
 
-  const range = `F${plant.sheetRow}:I${plant.sheetRow}`;
+  const range = `${process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME}!F${plant.sheetRow}:I${plant.sheetRow}`;
 
   const plantRow = plantToRow(plant);
 
