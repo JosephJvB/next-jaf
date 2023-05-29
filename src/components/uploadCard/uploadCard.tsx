@@ -106,7 +106,7 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   const dateStr = image && toDateStr(new Date(image.ts));
 
   return (
-    <div className="border-grey-200 relative flex h-[80vh] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8 pt-0">
+    <div className="border-grey-200 relative flex flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
       <Link href="/plants" className="absolute left-2 top-3">
         <ArrowLeftSVG />
       </Link>

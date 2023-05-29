@@ -14,7 +14,7 @@ export interface PlantCardProps {
 export const PlantCard: FC<PlantCardProps> = (props) => {
   const imageDateStr = toDateStr(new Date(props.plant.imageTS));
   return (
-    <div className="border-grey-200 flex h-[80vh] w-[100%] items-center justify-center rounded-lg border-2 border-solid bg-white px-5 py-8 pt-0">
+    <div className="border-grey-200 flex items-center justify-center rounded-lg border-2 border-solid bg-white px-5 py-8">
       <Link
         href={`/upload?slug=${props.plant.slug}`}
         className="flex h-fit flex-col items-center justify-center space-y-6"

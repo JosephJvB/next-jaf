@@ -29,7 +29,7 @@ export default function Home(props: HomeProps) {
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
       <div className="w-[100%] max-w-[100%] px-4">
         <div className="px-1">
-          <div className="border-grey-200 relative flex h-[80vh] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
+          <div className="border-grey-200 relative flex flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
             <a href={props.googleAuthUrl}>Login</a>
           </div>
         </div>

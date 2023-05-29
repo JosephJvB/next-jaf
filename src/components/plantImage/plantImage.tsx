@@ -27,7 +27,9 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
     // maybe server failed to load image?
     // not sure if this is right pattern
     // queryClient.invalidateQueries(props.plant.slug);
-    return null;
+    return (
+      <div className="h-[256px] w-[256px] rounded-md bg-gray-200 p-5"></div>
+    );
   }
 
   return (
