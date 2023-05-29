@@ -17,14 +17,14 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
     return item.baseUrl;
   };
 
-  const imageSrc = queryClient.getQueryData<string>(props.plant.slug);
-  useQuery(props.plant.slug, getPlantImage, {
-    cacheTime: hour - min * 5,
-    enabled: !imageSrc,
+  const q = useQuery(props.plant.slug, getPlantImage, {
+    staleTime: hour - min * 5,
     retry: 1,
   });
 
-  if (!imageSrc) {
+  // maybe server failed to load image?
+  if (!q.data) {
+    queryClient.invalidateQueries(props.plant.slug);
     return null;
   }
 
@@ -34,7 +34,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
       width="100"
       height="150"
       className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"
-      src={imageSrc}
+      src={q.data}
       alt={props.plant.plantName}
     />
   );

@@ -58,9 +58,8 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
       console.error("submitMutation failed");
     },
     onSuccess: () => {
-      // force refetch on plantImage
-      queryClient.setQueryData(props.plant.slug, undefined);
-      router.push("/");
+      queryClient.invalidateQueries(props.plant.slug);
+      router.push("/plants");
     },
   });
 
@@ -72,7 +71,6 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     form.setValue("photo", lastFile);
   };
 
-  // TODO: util
   const loadImage = (f: File) => {
     const url = URL.createObjectURL(f);
     const image = new window.Image();
