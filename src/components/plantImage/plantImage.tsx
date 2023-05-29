@@ -2,41 +2,41 @@ import Image from "next/image";
 import { FC } from "react";
 import { Plant } from "../../types/plant";
 import { getMediaItem } from "../../services/browser/photosLibraryService";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { hourMS, minMS } from "../../constants";
+import { MediaItem } from "../../types/google";
 
 export interface PlantImageProps {
   plant: Plant;
 }
 // TODO set appropriate default size
 export const PlantImage: FC<PlantImageProps> = (props) => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const getPlantImage = async () => {
     const item = await getMediaItem(props.plant.mediaItemId);
-    return item.baseUrl;
+    return item;
   };
 
-  const q = useQuery(props.plant.slug, getPlantImage, {
+  const q = useQuery<MediaItem>(props.plant.slug, getPlantImage, {
     staleTime: hourMS - minMS * 5,
-    retry: 1,
+    retry: 0,
   });
 
-  // maybe server failed to load image?
-  // not sure if this is right pattern
   if (!q.data) {
-    queryClient.invalidateQueries(props.plant.slug);
+    // maybe server failed to load image?
+    // not sure if this is right pattern
+    // queryClient.invalidateQueries(props.plant.slug);
     return null;
   }
 
   return (
     <Image
       draggable={false}
-      // TODO proper height and width from url
-      width="100"
-      height="150"
-      className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"
-      src={q.data}
+      width={parseInt(q.data.mediaMetadata.width)}
+      height={parseInt(q.data.mediaMetadata.height)}
+      className="h-[256px] w-[256px] object-contain"
+      src={q.data.baseUrl}
       alt={props.plant.plantName}
     />
   );

@@ -34,8 +34,14 @@ export default function Upload(props: UploadProps) {
     }
   }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between px-4 py-24">
-      {props.plant && <UploadCard plant={props.plant} />}
+    <main className="flex flex-col items-center justify-between py-24">
+      {props.plant && (
+        <div className="w-[100%] max-w-[100%] px-4">
+          <div className="px-1">
+            <UploadCard plant={props.plant} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

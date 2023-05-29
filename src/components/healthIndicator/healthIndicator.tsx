@@ -26,7 +26,7 @@ export const HealthIndicator: FC<PropsWithChildren<HealthIndicatorProps>> = (
   const to = `rgba(${props.rgbValues}, 0.2) ${percent}%`;
   return (
     <div
-      className="hover h-[60px] w-[60px] rounded-full border-2 border-solid border-gray-200 p-2"
+      className="hover h-[60px] w-[60px] rounded-full border-2 border-solid border-gray-200 p-3"
       style={{
         backgroundImage: `linear-gradient(to top, ${from}, ${to})`,
       }}

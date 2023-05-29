@@ -14,7 +14,7 @@ export interface PlantCardProps {
 export const PlantCard: FC<PlantCardProps> = (props) => {
   const imageDateStr = toDateStr(new Date(props.plant.imageTS));
   return (
-    <div className="border-grey-200 flex h-[80vh] max-h-[600px] w-[100%] items-center justify-center rounded-lg border-2 border-solid bg-white px-2 py-8">
+    <div className="border-grey-200 flex h-[80vh] w-[100%] items-center justify-center rounded-lg border-2 border-solid bg-white px-5 py-8 pt-0">
       <Link
         href={`/upload?slug=${props.plant.slug}`}
         className="flex h-fit flex-col items-center justify-center space-y-6"
@@ -24,7 +24,7 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
           <p className="text-xs text-gray-500">{imageDateStr}</p>
         </div>
         <h3 className="text-xl text-blue-400">{props.plant.plantName}</h3>
-        <div className="flex flex-row">
+        <div className="flex flex-row space-x-1">
           <HealthIndicator
             rgbValues={RGB.Blue}
             ts={props.plant.lastHydrated}

@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
     plants.forEach((plant) => {
       const mediaItem = mediaItems.find((i) => i.id === plant.mediaItemId);
       if (mediaItem) {
-        queryClient.setQueryData(plant.slug, mediaItem.baseUrl);
+        queryClient.setQueryData(plant.slug, mediaItem);
       }
     });
   } catch (e) {
@@ -93,7 +93,7 @@ export default function Plants(props: PlantsProps) {
   withHydration.sort((a, z) => a.hydration - z.hydration);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between py-24">
+    <main className="flex flex-col items-center justify-between py-24">
       <Swiper>
         {withHydration.map(({ plant }) => (
           <PlantCard key={plant.slug} plant={plant} />

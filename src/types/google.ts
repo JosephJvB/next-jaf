@@ -44,8 +44,8 @@ export interface MediaItem {
   mimeType: string;
   filename: string;
   mediaMetadata: {
-    width: string | number;
-    height: string | number;
+    width: string;
+    height: string;
     creationTime: string | number;
     photo: {
       cameraMake: string;

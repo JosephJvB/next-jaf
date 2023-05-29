@@ -10,6 +10,9 @@ import { useForm } from "react-hook-form";
 import { uploadFile } from "../../services/browser/photosLibraryService";
 import { updatePlant } from "../../services/browser/sheetsService";
 import { useMutation, useQueryClient } from "react-query";
+import { SaplingSVG } from "../../svgs/saplingSVG";
+import { RGB } from "../../constants";
+import { WaterDropSVG } from "../../svgs/waterDropSVG";
 
 interface FormValues {
   water: boolean;
@@ -35,23 +38,20 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   const router = useRouter();
   const form = useForm<FormValues>();
 
-  const photo = form.watch("photo");
+  const formValues = form.watch();
 
   useEffect(() => {
-    if (photo) {
-      loadImage(photo);
+    if (formValues.photo) {
+      loadImage(formValues.photo);
     }
-  }, [photo]);
+  }, [formValues.photo]);
 
   const submitMutation = useMutation({
     retry: 0,
-    mutationFn: async (plant: Plant) => {
-      if (!photo) {
-        return;
-      }
-      const uploadResult = await uploadFile(plant, photo);
-      plant.mediaItemId = uploadResult.id;
-      await updatePlant(plant);
+    mutationFn: async (v: { plant: Plant; photo: File }) => {
+      const uploadResult = await uploadFile(v.plant, v.photo);
+      v.plant.mediaItemId = uploadResult.id;
+      await updatePlant(v.plant);
     },
     onError: (error) => {
       console.error(error);
@@ -86,6 +86,9 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   };
 
   const handleSubmit = async (values: FormValues) => {
+    if (!values.photo) {
+      return;
+    }
     const nextPlant = { ...props.plant };
     nextPlant.imageTS = image?.ts ?? Date.now();
     if (values.food) {
@@ -94,17 +97,21 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
     if (values.water) {
       nextPlant.lastHydrated = nextPlant.imageTS;
     }
-    await submitMutation.mutate(nextPlant);
+    await submitMutation.mutate({
+      plant: nextPlant,
+      photo: values.photo,
+    });
   };
 
   const dateStr = image && toDateStr(new Date(image.ts));
+
   return (
-    <div className="border-grey-200 relative flex h-[80vh] max-h-[600px] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8">
-      <Link href="/" className="absolute left-2 top-3">
+    <div className="border-grey-200 relative flex h-[80vh] w-[100%] flex-col items-center justify-center space-y-6 rounded-lg border-2 border-solid bg-white px-5 py-8 pt-0">
+      <Link href="/plants" className="absolute left-2 top-3">
         <ArrowLeftSVG />
       </Link>
       <form
-        className="relative flex flex-col items-center justify-center space-y-3"
+        className="relative flex flex-col items-center space-y-3"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <label
@@ -120,14 +127,14 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
             accept="image/heic, image/heif, image/jpeg, image/jpg, image/png, image/webp"
           />
           {!image && (
-            <div className="rounded-md bg-gray-200 p-5">
+            <div className="h-[256px] w-[256px] rounded-md bg-gray-200 p-5">
               <CameraSVG />
             </div>
           )}
           {image && (
             <>
               <Image
-                className="m-auto"
+                className="h-[256px] w-[256px] object-contain"
                 height={image.height}
                 width={image.width}
                 src={image.src}
@@ -137,24 +144,46 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
             </>
           )}
         </label>
-        <p>Take/select photo of {props.plant.plantName}</p>
-        <fieldset className="flex flex-col">
-          <label htmlFor="water">Water</label>
+        <h3 className="text-xl text-blue-400">{props.plant.plantName}</h3>
+        <fieldset className="flex flex-row space-x-1">
+          <label
+            htmlFor="water"
+            className="h-[60px] w-[60px] rounded-full border-2 border-solid border-gray-200 p-3"
+            style={{
+              background: `rgba(${RGB.Blue}, ${
+                formValues.water ? "1" : "0.2"
+              })`,
+            }}
+          >
+            <WaterDropSVG />
+          </label>
           <input
+            className="appearance-none"
             type="checkbox"
             name="water"
             id="water"
             onChange={(e) => form.setValue("water", e.target.checked)}
           />
-          <label htmlFor="food">Food</label>
-          <input
-            type="checkbox"
-            name="food"
-            id="food"
-            onChange={(e) => form.setValue("food", e.target.checked)}
-          />
+          <label
+            htmlFor="food"
+            className="h-[60px] w-[60px] rounded-full border-2 border-solid border-gray-200 p-3"
+            style={{
+              background: `rgba(${RGB.Green}, ${
+                formValues.food ? "1" : "0.2"
+              })`,
+            }}
+          >
+            <SaplingSVG />
+            <input
+              className="appearance-none"
+              type="checkbox"
+              name="food"
+              id="food"
+              onChange={(e) => form.setValue("food", e.target.checked)}
+            />
+          </label>
         </fieldset>
-        <button disabled={!photo} type="submit">
+        <button disabled={!formValues.photo} type="submit">
           {submitMutation.isLoading ? "Saving" : "Save"}
         </button>
       </form>
