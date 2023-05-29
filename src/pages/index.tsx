@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { getOAuth2Url } from "../services/server/auth/oAuth2";
-import { getGoogleToken } from "../services/browser/auth";
+import { getAuthCookie } from "../services/browser/auth";
 
 export interface HomeProps {
   googleAuthUrl: string;
@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
 export default function Home(props: HomeProps) {
   const router = useRouter();
   if (typeof window !== "undefined") {
-    const token = getGoogleToken();
+    const token = getAuthCookie();
     if (token) {
       router.push("/plants");
     }

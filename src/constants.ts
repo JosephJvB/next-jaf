@@ -1,8 +1,7 @@
 import { ValueOf } from "./util";
 
-export const LocalStorage = {
-  Token: "GoogleAuthToken",
-  TokenExp: "GoogleAuthTokenExp",
+export const Cookie = {
+  Auth: "PlantAuth",
 };
 
 export const GoogleScopes = [
@@ -18,6 +17,9 @@ export const secMS = 1000;
 export const minMS = secMS * 60;
 export const hourMS = minMS * 60;
 export const dayMS = hourMS * 24;
+
+export const minSec = 60;
+export const hourSec = minSec * 60;
 
 // type stuff
 export type RGBValue = ValueOf<typeof RGB>;

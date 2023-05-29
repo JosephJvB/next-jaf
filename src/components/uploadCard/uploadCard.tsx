@@ -29,9 +29,6 @@ export interface UploadCardProps {
   plant: Plant;
 }
 
-// TODO appropriate image size - scale by max width/height
-// TODO styling for radio buttons
-// TODO submit could be passed as a prop to form child
 export const UploadCard: FC<UploadCardProps> = (props) => {
   const queryClient = useQueryClient();
   const [image, setImage] = useState<ImageProps | null>();

@@ -9,7 +9,6 @@ import { MediaItem } from "../../types/google";
 export interface PlantImageProps {
   plant: Plant;
 }
-// TODO set appropriate default size
 export const PlantImage: FC<PlantImageProps> = (props) => {
   // const queryClient = useQueryClient();
 

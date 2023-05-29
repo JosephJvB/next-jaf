@@ -3,8 +3,8 @@ import { Plant } from "../types/plant";
 import { UploadCard } from "../components/uploadCard/uploadCard";
 import { useRouter } from "next/router";
 import { getAllPlants } from "../services/server/sheetService";
-import { clearToken, getGoogleToken } from "../services/browser/auth";
 import { DehydratedState, QueryClient, dehydrate } from "react-query";
+import { clearAuthCookie, getAuthCookie } from "../services/browser/auth";
 export interface UploadProps {
   plant?: Plant;
   dehydratedState: DehydratedState;
@@ -27,10 +27,12 @@ export const getServerSideProps: GetServerSideProps<UploadProps> = async (
 export default function Upload(props: UploadProps) {
   const router = useRouter();
   if (typeof window !== "undefined") {
-    const token = getGoogleToken();
-    if (!token || !props.plant) {
-      clearToken();
+    const authToken = getAuthCookie();
+    if (!authToken) {
       router.push("/");
+    }
+    if (!props.plant) {
+      router.push("/plants");
     }
   }
   return (

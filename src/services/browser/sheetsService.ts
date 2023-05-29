@@ -1,13 +1,13 @@
 import { GoogleSpreadsheetId } from "../../constants";
 import { Plant, plantToRow } from "../../types/plant";
-import { getGoogleToken } from "./auth";
+import { getAuthCookie } from "./auth";
 
 const baseUrl = "https://sheets.googleapis.com/v4";
 
 export const updatePlant = async (plant: Plant) => {
-  const authToken = getGoogleToken();
+  const authToken = getAuthCookie();
   if (!authToken) {
-    throw new Error("No auth token in localStorage");
+    throw new Error("missing Auth Cookie");
   }
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${authToken}`);

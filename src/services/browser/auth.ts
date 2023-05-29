@@ -1,30 +1,16 @@
-import { LocalStorage, hourMS, minMS } from "../../constants";
+import cookie from "cookie";
+import { Cookie, hourSec } from "../../constants";
 
-// TODO: Cookie with expiry would make more sense
-// but it got a bit strange, decided to stay with this for now..
-
-export const clearToken = () => {
-  localStorage.removeItem(LocalStorage.Token);
-  localStorage.removeItem(LocalStorage.TokenExp);
+export const getAuthCookie = () => {
+  return cookie.parse(document.cookie)[Cookie.Auth];
 };
-
-export const setGoogleToken = (token: string) => {
-  localStorage.setItem(LocalStorage.Token, token);
-  localStorage.setItem(LocalStorage.TokenExp, (Date.now() + hourMS).toString());
+export const setAuthCookie = (v: string) => {
+  document.cookie = cookie.serialize(Cookie.Auth, v, {
+    maxAge: hourSec,
+  });
 };
-
-export const getGoogleToken = () => {
-  const token = localStorage.getItem(LocalStorage.Token);
-  if (!token) {
-    return null;
-  }
-  const ts = parseInt(localStorage.getItem(LocalStorage.TokenExp) ?? "0");
-  const soon = Date.now() + minMS * 5;
-
-  if (soon > ts) {
-    clearToken();
-    return null;
-  }
-
-  return token;
+export const clearAuthCookie = () => {
+  document.cookie = cookie.serialize(Cookie.Auth, "", {
+    maxAge: -1,
+  });
 };

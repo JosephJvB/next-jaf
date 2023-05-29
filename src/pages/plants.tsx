@@ -5,18 +5,19 @@ import { getAllPlants } from "../services/server/sheetService";
 import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getGoogleToken, setGoogleToken } from "../services/browser/auth";
+import { getAuthCookie, setAuthCookie } from "../services/browser/auth";
 import { DehydratedState, QueryClient, dehydrate } from "react-query";
 import { batchGetMediaItems } from "../services/server/photosLibraryService";
 import { PlantCard } from "../components/plantCard/plantCard";
+import { Cookie } from "../constants";
 
 export interface PlantsProps {
-  googleAuthToken?: string;
+  newAuthToken?: string;
   dehydratedState: DehydratedState;
   plants: Plant[];
 }
 
-const loadToken = async (code: string) => {
+const getNewToken = async (code: string) => {
   if (!code) {
     return;
   }
@@ -27,12 +28,14 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   context
 ) => {
   const queryClient = new QueryClient();
-  const [plants, googleAuthToken] = await Promise.all([
+  const [plants, newAuthToken] = await Promise.all([
     getAllPlants(),
-    loadToken(context.query.code as string),
+    getNewToken(context.query.code as string),
   ]);
 
-  if (!googleAuthToken) {
+  const auth = newAuthToken ?? context.req.cookies[Cookie.Auth];
+
+  if (!auth) {
     return {
       props: {
         plants,
@@ -44,7 +47,7 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
   // preload plant images on login - probably overkill tbh? Fine to load clientside on PlantImage component
   try {
     const mediaIds = plants.map((p) => p.mediaItemId);
-    const mediaItems = await batchGetMediaItems(mediaIds, googleAuthToken);
+    const mediaItems = await batchGetMediaItems(mediaIds, auth);
     plants.forEach((plant) => {
       const mediaItem = mediaItems.find((i) => i.id === plant.mediaItemId);
       if (mediaItem) {
@@ -56,22 +59,26 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
     console.error("Failed to load mediaItems @ server");
   }
 
+  const props: PlantsProps = {
+    plants,
+    dehydratedState: dehydrate(queryClient),
+  };
+  if (newAuthToken) {
+    props.newAuthToken = newAuthToken;
+  }
+
   return {
-    props: {
-      plants,
-      dehydratedState: dehydrate(queryClient),
-      googleAuthToken,
-    },
+    props,
   };
 };
 
 export default function Plants(props: PlantsProps) {
   const router = useRouter();
   if (typeof window !== "undefined") {
-    if (props.googleAuthToken) {
-      setGoogleToken(props.googleAuthToken);
+    if (props.newAuthToken) {
+      setAuthCookie(props.newAuthToken);
     }
-    const token = getGoogleToken();
+    const token = getAuthCookie();
     if (!token) {
       router.push("/");
     }
@@ -84,7 +91,7 @@ export default function Plants(props: PlantsProps) {
         });
       }
     }
-  }, [router, router.isReady]);
+  }, [router.isReady]);
 
   const withHydration = props.plants.map((plant) => ({
     plant,
