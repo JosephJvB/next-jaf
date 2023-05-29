@@ -1,15 +1,4 @@
-import { FC, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import { Plant } from "../../types/plant";
-
-// TODO: new file path src/containers/swiper
-
-// TODO: remove - only needed it for countdown display
-// https://stackoverflow.com/questions/66374123/warning-text-content-did-not-match-server-im-out-client-im-in-div
-const PlantCardComponent = dynamic(
-  () => import("../plantCard/plantCard").then((f) => f.PlantCard),
-  { ssr: false }
-);
+import { FC, PropsWithChildren, useRef, useState } from "react";
 
 type SwipeEvent =
   | MouseEvent
@@ -17,12 +6,10 @@ type SwipeEvent =
   | React.TouchEvent<HTMLElement>
   | React.MouseEvent<HTMLElement>;
 
-export interface SwiperProps {
-  plants: Plant[];
-}
+export interface SwiperProps {}
 
 // https://github.com/dominicarrojado/react-typescript-swiper/blob/main/src/components/Swiper.tsx
-export const Swiper: FC<SwiperProps> = (props) => {
+export const Swiper: FC<PropsWithChildren<SwiperProps>> = (props) => {
   const containerRef = useRef<HTMLUListElement>(null);
   const minXRef = useRef(0);
   const startXRef = useRef(0);
@@ -108,12 +95,7 @@ export const Swiper: FC<SwiperProps> = (props) => {
           transform: `translate3d(${offsetX}px, 0, 0)`,
         }}
       >
-        {/* TODO: render these as props.children? */}
-        {props.plants.map((plant) => (
-          <li key={plant.slug} className="w-[100%] flex-shrink-0 px-1">
-            <PlantCardComponent plant={plant} />
-          </li>
-        ))}
+        {props.children}
       </ul>
     </div>
   );

@@ -31,3 +31,12 @@ export const plantToRow = (plant: Plant) => [
   plant.lastHydrated.toString(), // H
   plant.lastFed.toString(), // I
 ];
+
+export const getHydrationPercent = (plant: Plant) =>
+  getPercent(plant.lastHydrated, plant.hydrationInterval);
+
+export const getFoodPercent = (plant: Plant) =>
+  getPercent(plant.lastFed, plant.foodInterval);
+
+export const getPercent = (ts: number, cycle: number) =>
+  Math.max(100 - Math.round(((Date.now() - ts) / cycle) * 100), 0);

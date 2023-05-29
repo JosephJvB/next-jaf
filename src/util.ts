@@ -28,3 +28,5 @@ const getCountdown = (plant: Plant) => {
     .filter((str) => !str.startsWith("0 ") && !str.startsWith("-"))
     .join(" ");
 };
+
+export type ValueOf<T> = T[keyof T];

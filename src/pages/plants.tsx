@@ -1,5 +1,5 @@
-import { Plant } from "../types/plant";
-import { Swiper } from "../components/swiper/swiper";
+import { Plant, getHydrationPercent } from "../types/plant";
+import { Swiper } from "../containers/swiper/swiper";
 import { GetServerSideProps } from "next";
 import { getAllPlants } from "../services/server/sheetService";
 import { getAccessTokenFromCode } from "../services/server/auth/oAuth2";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getGoogleToken, setGoogleToken } from "../services/browser/auth";
 import { DehydratedState, QueryClient, dehydrate } from "react-query";
 import { batchGetMediaItems } from "../services/server/photosLibraryService";
+import { PlantCard } from "../components/plantCard/plantCard";
 
 export interface PlantsProps {
   googleAuthToken?: string;
@@ -83,11 +84,21 @@ export default function Plants(props: PlantsProps) {
     }
   }, [router, router.isReady]);
 
-  // TODO order plants by most in need of water
+  const withHydration = props.plants.map((plant) => ({
+    plant,
+    hydration: getHydrationPercent(plant),
+  }));
+  withHydration.sort((a, z) => a.hydration - z.hydration);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
-      <Swiper plants={props.plants} />
+      <Swiper>
+        {withHydration.map(({ plant }) => (
+          <li key={plant.slug} className="w-[100%] flex-shrink-0 px-1">
+            <PlantCard plant={plant} />
+          </li>
+        ))}
+      </Swiper>
     </main>
   );
 }

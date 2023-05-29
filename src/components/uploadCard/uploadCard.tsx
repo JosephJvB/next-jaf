@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { CameraSVG } from "../svgs/cameraSVG";
+import { CameraSVG } from "../../svgs/cameraSVG";
 import { toDateStr } from "../../util";
 import { useRouter } from "next/router";
 import { Plant } from "../../types/plant";
-import { ArrowLeftSVG } from "../svgs/arrowLeftSVG";
+import { ArrowLeftSVG } from "../../svgs/arrowLeftSVG";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { uploadFile } from "../../services/browser/photosLibraryService";
