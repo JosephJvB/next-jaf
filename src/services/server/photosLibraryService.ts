@@ -11,8 +11,12 @@ export const batchGetMediaItems = async (
   headers.append("Content-Type", "application/json");
 
   const search = new URLSearchParams();
+  const unique = new Set();
   for (const id of mediaItemIds) {
-    search.append("mediaItemIds", id);
+    if (!unique.has(id)) {
+      search.append("mediaItemIds", id);
+    }
+    unique.add(id);
   }
 
   const res = await fetch(
@@ -21,11 +25,12 @@ export const batchGetMediaItems = async (
       headers,
     }
   );
-  if (!res.ok) {
-    throw res;
-  }
 
   const data: { mediaItemResults: MediaItemResult[] } = await res.json();
+
+  if (!res.ok) {
+    throw data;
+  }
 
   return data.mediaItemResults.map((d) => d.mediaItem);
 };

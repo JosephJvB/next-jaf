@@ -52,11 +52,13 @@ export const uploadFile = async (plant: Plant, file: File) => {
       ],
     }),
   });
-  if (!res.ok) {
-    throw res;
-  }
 
   const results: UploadResponse = await res.json();
+
+  if (!res.ok) {
+    throw results;
+  }
+
   if (results.newMediaItemResults[0].status.message !== "Success") {
     throw results.newMediaItemResults[0].status;
   }
@@ -82,8 +84,12 @@ const getUploadToken = async (
     headers,
     body: file,
   });
+
+  const token = await res.text();
+
   if (!res.ok) {
-    throw res;
+    throw token;
   }
-  return res.text();
+
+  return token;
 };
