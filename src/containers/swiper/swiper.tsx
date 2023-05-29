@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useRef, useState } from "react";
+import React, { FC, PropsWithChildren, useRef, useState } from "react";
 
 type SwipeEvent =
   | MouseEvent
@@ -97,7 +97,9 @@ export const Swiper: FC<PropsWithChildren<SwiperProps>> = (props) => {
           transform: `translate3d(${offsetX}px, 0, 0)`,
         }}
       >
-        {props.children}
+        {React.Children.map(props.children, (child) => (
+          <li className="w-[100%] flex-shrink-0 px-1">{child}</li>
+        ))}
       </ul>
     </div>
   );
