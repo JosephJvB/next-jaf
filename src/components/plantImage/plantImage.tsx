@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Plant } from "../../types/plant";
 import { getMediaItem } from "../../services/browser/photosLibraryService";
 import { useQuery, useQueryClient } from "react-query";
-import { hour, min } from "../../constants";
+import { hourMS, minMS } from "../../constants";
 
 export interface PlantImageProps {
   plant: Plant;
@@ -18,7 +18,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
   };
 
   const q = useQuery(props.plant.slug, getPlantImage, {
-    staleTime: hour - min * 5,
+    staleTime: hourMS - minMS * 5,
     retry: 1,
   });
 
@@ -32,6 +32,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
   return (
     <Image
       draggable={false}
+      // TODO proper height and width from url
       width="100"
       height="150"
       className="border-grey-200 h-[150px] w-auto rounded-sm border-2 border-solid"

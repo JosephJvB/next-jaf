@@ -1,4 +1,4 @@
-import { LocalStorage, hour, min } from "../../constants";
+import { LocalStorage, hourMS, minMS } from "../../constants";
 
 // TODO: Cookie with expiry would make more sense
 
@@ -9,7 +9,7 @@ export const clearToken = () => {
 
 export const setGoogleToken = (token: string) => {
   localStorage.setItem(LocalStorage.Token, token);
-  localStorage.setItem(LocalStorage.TokenExp, (Date.now() + hour).toString());
+  localStorage.setItem(LocalStorage.TokenExp, (Date.now() + hourMS).toString());
 };
 
 export const getGoogleToken = () => {
@@ -18,7 +18,7 @@ export const getGoogleToken = () => {
     return null;
   }
   const ts = parseInt(localStorage.getItem(LocalStorage.TokenExp) ?? "0");
-  const soon = Date.now() + min;
+  const soon = Date.now() + minMS * 5;
 
   if (soon > ts) {
     clearToken();

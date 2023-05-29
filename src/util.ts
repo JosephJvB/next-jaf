@@ -1,4 +1,4 @@
-import { day, hour, min, sec } from "./constants";
+import { dayMS, hourMS, minMS, secMS } from "./constants";
 import { Plant } from "./types/plant";
 
 export const toDateStr = (d: Date) => {
@@ -20,10 +20,10 @@ const getCountdown = (plant: Plant) => {
     return "Water me!";
   }
   const diff = plant.lastHydrated + plant.hydrationInterval - Date.now();
-  const days = Math.floor(diff / day);
-  const hrs = Math.floor((diff % day) / hour);
-  const mins = Math.floor((diff % hour) / min);
-  const secs = Math.floor((diff % min) / sec);
+  const days = Math.floor(diff / dayMS);
+  const hrs = Math.floor((diff % dayMS) / hourMS);
+  const mins = Math.floor((diff % hourMS) / minMS);
+  const secs = Math.floor((diff % minMS) / secMS);
   return [`${days} days`, `${hrs} hrs`, `${mins} mins`, `${secs} secs`]
     .filter((str) => !str.startsWith("0 ") && !str.startsWith("-"))
     .join(" ");

@@ -8,7 +8,9 @@ type SwipeEvent =
 
 export interface SwiperProps {}
 
+// https://www.youtube.com/watch?v=V0dfhBc2lj8
 // https://github.com/dominicarrojado/react-typescript-swiper/blob/main/src/components/Swiper.tsx
+// Using refs because it's more performant (i think). state is re-created on render, ref persists
 export const Swiper: FC<PropsWithChildren<SwiperProps>> = (props) => {
   const containerRef = useRef<HTMLUListElement>(null);
   const minXRef = useRef(0);

@@ -24,7 +24,6 @@ export const PlantCard: FC<PlantCardProps> = (props) => {
           <p className="text-xs text-gray-500">{imageDateStr}</p>
         </div>
         <h3 className="text-xl text-blue-400">{props.plant.plantName}</h3>
-        {/* <p>{countdown}</p> */}
         <div className="flex flex-row">
           <HealthIndicator
             rgbValues={RGB.Blue}

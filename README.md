@@ -11,14 +11,9 @@ todos:
 1. Tidy up script files, make some reusable methods
 1. storybook ? or delete it
 
-Using ReactQuery / QueryClient as a global store for Photo Urls & a way to load them. It's gr8
-
 1. Home screen list plants
 
 - [x] Swipe between plants
-  - https://www.youtube.com/watch?v=V0dfhBc2lj8
-  - https://github.com/dominicarrojado/react-typescript-swiper
-  - Using refs because it's more performant (i think). state is re-created on render, ref persists
 
 2. Plant Card
 
@@ -29,15 +24,10 @@ Using ReactQuery / QueryClient as a global store for Photo Urls & a way to load 
 - [x] Hydration state & date
 - [x] Button to mark plant as watered
 - [x] Button to edit plant details
-- ~~Link to Wikipedia?~~
 
 4. Create/Update plant details
 
 - [x] Image Upload
-
-  - https://developers.google.com/photos/library/guides/get-started
-  - https://developers.google.com/photos/library/guides/upload-media
-  - https://github.com/roopakv/google-photos/
 
 - Admin: CRUD plants
   - Set Name
