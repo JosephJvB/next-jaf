@@ -88,7 +88,7 @@ export const Swiper: FC<PropsWithChildren<SwiperProps>> = (props) => {
       onTouchStart={swipeStart}
       onMouseUp={swipeEnd}
       onTouchEnd={swipeEnd}
-      className="w-[100%] max-w-[100%] touch-pan-y overflow-hidden px-4"
+      className="w-[100%] max-w-[100%] touch-none overflow-hidden px-4"
     >
       <ul
         ref={containerRef}
