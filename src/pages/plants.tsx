@@ -47,7 +47,9 @@ export const getServerSideProps: GetServerSideProps<PlantsProps> = async (
     const mediaItems = await batchGetMediaItems(mediaIds, googleAuthToken);
     plants.forEach((plant) => {
       const mediaItem = mediaItems.find((i) => i.id === plant.mediaItemId);
-      queryClient.setQueryData(plant.slug, mediaItem?.baseUrl);
+      if (mediaItem) {
+        queryClient.setQueryData(plant.slug, mediaItem.baseUrl);
+      }
     });
   } catch (e) {
     console.error(e);

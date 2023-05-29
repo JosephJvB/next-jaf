@@ -23,6 +23,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
   });
 
   // maybe server failed to load image?
+  // not sure if this is right pattern
   if (!q.data) {
     queryClient.invalidateQueries(props.plant.slug);
     return null;
