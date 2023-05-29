@@ -13,12 +13,14 @@ export const HealthIndicator: FC<PropsWithChildren<HealthIndicatorProps>> = (
   const calcPercent = () => getPercent(props.ts, props.cycle);
   const [percent, setPercent] = useState(() => calcPercent());
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPercent(calcPercent());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  if (typeof window !== "undefined") {
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setPercent(calcPercent());
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+  }
 
   const from = `rgba(${props.rgbValues}, 1) ${percent}%`;
   const to = `rgba(${props.rgbValues}, 0.2) ${percent}%`;

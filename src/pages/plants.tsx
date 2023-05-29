@@ -8,12 +8,7 @@ import { useEffect } from "react";
 import { getGoogleToken, setGoogleToken } from "../services/browser/auth";
 import { DehydratedState, QueryClient, dehydrate } from "react-query";
 import { batchGetMediaItems } from "../services/server/photosLibraryService";
-import dynamic from "next/dynamic";
-
-const PlantCardComponent = dynamic(
-  () => import("../components/plantCard/plantCard").then((f) => f.PlantCard),
-  { ssr: false }
-);
+import { PlantCard } from "../components/plantCard/plantCard";
 
 export interface PlantsProps {
   googleAuthToken?: string;
@@ -101,7 +96,7 @@ export default function Plants(props: PlantsProps) {
     <main className="flex min-h-screen flex-col items-center justify-between py-24">
       <Swiper>
         {withHydration.map(({ plant }) => (
-          <PlantCardComponent key={plant.slug} plant={plant} />
+          <PlantCard key={plant.slug} plant={plant} />
         ))}
       </Swiper>
     </main>
