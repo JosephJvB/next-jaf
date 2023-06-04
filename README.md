@@ -2,7 +2,7 @@ Vegetation Hydration Station : VHS
 
 todos:
 
-1. fix general layout display
+1. ~~fix general layout display~~
 1. image colour composition
 
 - https://cloud.google.com/vision/docs/detecting-properties#vision_image_property_detection-nodejs

@@ -22,7 +22,7 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
     retry: 0,
   });
 
-  if (!q.data) {
+  if (!q.data?.mediaMetadata || !q.data?.baseUrl) {
     // maybe server failed to load image?
     // not sure if this is right pattern
     // queryClient.invalidateQueries(props.plant.slug);

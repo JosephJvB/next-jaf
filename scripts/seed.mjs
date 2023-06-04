@@ -100,6 +100,19 @@ const rows = [
     "1684355180885",
     "1683836894702",
   ],
+  [
+    "verbena",
+    "Verbena",
+    Math.round(day).toString(),
+    Math.round(week * 4).toString(),
+    process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME === "dev"
+      ? devAlbumId
+      : "AA6CZZgri61mz2E5fqODJcJdcWfcrMf4kT5KhqtKOjNYqdu7J_xydjDCC4FysjAXSKdkyQntyLoE",
+    "AA6CZZghSAI4yXIfuGQYMwZDQc79us4ND40jROlPiYDoWuiNp5nIrF07jAUcP41FjeZ8vSz8Y8Rc",
+    "1684355180885",
+    "1684355180885",
+    "1683836894702",
+  ],
 ];
 
 const e = async () => {
@@ -122,4 +135,4 @@ const e = async () => {
   });
 };
 
-e();
+// e();
