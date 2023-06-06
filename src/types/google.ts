@@ -67,3 +67,21 @@ export interface MediaItemResult {
     message: string;
   };
 }
+
+export interface Colour {
+  color: {
+    red: number;
+    green: number;
+    blue: number;
+  };
+  score: number;
+  pixelFraction: number;
+}
+
+export interface ImagePropertiesResponse {
+  imagePropertiesAnnotation: {
+    dominantColors: {
+      colors: Colour[];
+    };
+  };
+}

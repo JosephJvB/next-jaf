@@ -9,18 +9,24 @@ export interface Plant {
   lastHydrated: number;
   lastFed: number;
   sheetRow: number;
+  imageRGB: string;
 }
 
+export const PlantStartChar = "A";
+export const PlantEditableStartChar = "F";
+export const PlantEndChar = "J";
+
 export const rowToPlant = (row: string[], idx: number): Plant => ({
-  slug: row[0], // A
-  plantName: row[1], // B
+  slug: row[0] ?? "", // A
+  plantName: row[1] ?? "", // B
   hydrationInterval: parseInt(row[2]), // C
   foodInterval: parseInt(row[3]), // D
-  albumId: row[4], // E
-  mediaItemId: row[5], // F
+  albumId: row[4] ?? "", // E
+  mediaItemId: row[5] ?? "", // F
   imageTS: parseInt(row[6]), // G
   lastHydrated: parseInt(row[7]), // H
   lastFed: parseInt(row[8]), // I
+  imageRGB: row[9] ?? "white", // J
   sheetRow: idx + 2,
 });
 
@@ -30,6 +36,7 @@ export const plantToRow = (plant: Plant) => [
   plant.imageTS.toString(), // G
   plant.lastHydrated.toString(), // H
   plant.lastFed.toString(), // I
+  plant.imageRGB, // J
 ];
 
 export const getHydrationPercent = (plant: Plant) =>

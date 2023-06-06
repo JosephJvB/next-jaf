@@ -1,5 +1,10 @@
 import { GoogleSpreadsheetId } from "../../constants";
-import { Plant, plantToRow } from "../../types/plant";
+import {
+  Plant,
+  PlantEditableStartChar,
+  PlantEndChar,
+  plantToRow,
+} from "../../types/plant";
 import { getAuthCookie } from "./auth";
 
 const baseUrl = "https://sheets.googleapis.com/v4";
@@ -16,7 +21,7 @@ export const updatePlant = async (plant: Plant) => {
   const searchParams = new URLSearchParams();
   searchParams.append("valueInputOption", "RAW");
 
-  const range = `${process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME}!F${plant.sheetRow}:I${plant.sheetRow}`;
+  const range = `${process.env.NEXT_PUBLIC_GOOGLE_SHEETNAME}!${PlantEditableStartChar}${plant.sheetRow}:${PlantEndChar}${plant.sheetRow}`;
 
   const plantRow = plantToRow(plant);
 

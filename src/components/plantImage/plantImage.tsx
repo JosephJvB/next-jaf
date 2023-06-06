@@ -31,14 +31,30 @@ export const PlantImage: FC<PlantImageProps> = (props) => {
     );
   }
 
+  let w = parseInt(q.data.mediaMetadata.width);
+  let h = parseInt(q.data.mediaMetadata.height);
+
+  if (w > h) {
+    h = (h / w) * 256 + 3; // idk, add 3, something weird in rounding?
+    w = 256;
+  } else {
+    w = (w / h) * 256 + 3; // idk, add 3, something weird in rounding?
+    h = 256;
+  }
+
   return (
     <Image
       draggable={false}
       width={parseInt(q.data.mediaMetadata.width)}
       height={parseInt(q.data.mediaMetadata.height)}
-      className="h-[256px] w-[256px] object-contain"
+      className="rounded-sm border-[5px] border-solid object-contain"
       src={q.data.baseUrl}
       alt={props.plant.plantName}
+      style={{
+        width: `${w}px`,
+        height: `${h}px`,
+        borderColor: props.plant.imageRGB,
+      }}
     />
   );
 };

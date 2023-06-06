@@ -7,6 +7,7 @@ export const Cookie = {
 export const GoogleScopes = [
   "https://www.googleapis.com/auth/spreadsheets",
   "https://www.googleapis.com/auth/photoslibrary",
+  "https://www.googleapis.com/auth/cloud-vision",
 ];
 
 export const GoogleSpreadsheetId =

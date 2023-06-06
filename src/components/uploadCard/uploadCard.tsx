@@ -13,6 +13,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { SaplingSVG } from "../../svgs/saplingSVG";
 import { RGB } from "../../constants";
 import { WaterDropSVG } from "../../svgs/waterDropSVG";
+import { getImageColour } from "../../services/browser/cloudVisionService";
 
 interface FormValues {
   water: boolean;
@@ -46,7 +47,15 @@ export const UploadCard: FC<UploadCardProps> = (props) => {
   const submitMutation = useMutation({
     retry: 0,
     mutationFn: async (v: { plant: Plant; photo: File }) => {
-      const uploadResult = await uploadFile(v.plant, v.photo);
+      const [colourResults, uploadResult] = await Promise.all([
+        getImageColour(v.photo),
+        uploadFile(v.plant, v.photo),
+      ]);
+      v.plant.imageRGB = `rgb(${[
+        colourResults.color.red,
+        colourResults.color.green,
+        colourResults.color.blue,
+      ].join(",")})`;
       v.plant.mediaItemId = uploadResult.id;
       await updatePlant(v.plant);
     },
